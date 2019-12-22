@@ -1,0 +1,142 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorate="~{comm/layoutPage}">
+<body>
+<!-- Start of Search Wrapper -->
+<div class="search-area-wrapper" layout:fragment="search" >
+	<div class="search-area container">
+		<!-- Start Sign In Form -->
+		<form id="loginFrom" th:action="@{/user/login}" method="post" class="fh5co-form animate-box" data-animate-effect="fadeInRight">
+			<h2>登陆</h2>
+			<div class="form-group">
+				<label for="userName" class="sr-only">用户名：</label>
+				<input type="text" class="form-control" id="userName" name="userName" placeholder="请输入用户名/手机号/邮箱" autocomplete="on">
+			</div>
+			<div class="form-group">
+				<label for="passWord" class="sr-only">密码：</label>
+				<input type="password" class="form-control" id="passWord" name="passWord" placeholder="请输入密码" autocomplete="on">
+			</div>
+			<div class="form-group">
+				<label for="remember"><input type="checkbox" id="remember" name="remember">自动登陆</label>
+			</div>
+			<div class="form-group">
+				<p>还没有账号？<a th:href="@{/signUp}">立即注册</a> | <a th:href="@{/forgot}">找回密码</a></p>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="登陆" class="btn btn-primary" onclick="login();">
+			</div>
+		</form>
+		<!-- END Sign In Form -->
+	</div>
+</div>
+<!-- start of page content -->
+<div class="span8 page-content" layout:fragment="page_content">
+
+	<!-- Basic Home Page Template -->
+	<div class="row separator">
+		<section class="span4 articles-list">
+			<h3>Featured Articles</h3>
+			<ul class="articles">
+				<li class="article-entry standard">
+					<h4><a href="single.html" th:href="@{single.html}">Integrating WordPress with Your Website</a></h4>
+					<span class="article-meta">25 Feb, 2013 in <a href="#" title="View all posts in Server &amp; Database">Server &amp; Database</a></span>
+					<span class="like-count">66</span>
+				</li>
+				<li class="article-entry standard">
+					<h4><a href="single.html" th:href="@{single.html}">WordPress Site Maintenance</a></h4>
+					<span class="article-meta">24 Feb, 2013 in <a href="#" title="View all posts in Website Dev">Website Dev</a></span>
+					<span class="like-count">15</span>
+				</li>
+				<li class="article-entry video">
+					<h4><a href="single.html" th:href="@{single.html}">Meta Tags in WordPress</a></h4>
+					<span class="article-meta">23 Feb, 2013 in <a href="#" title="View all posts in Website Dev">Website Dev</a></span>
+					<span class="like-count">8</span>
+				</li>
+				<li class="article-entry image">
+					<h4><a href="single.html" th:href="@{single.html}">WordPress in Your Language</a></h4>
+					<span class="article-meta">22 Feb, 2013 in <a href="#" title="View all posts in Advanced Techniques">Advanced Techniques</a></span>
+					<span class="like-count">6</span>
+				</li>
+				<li class="article-entry standard">
+					<h4><a href="single.html" th:href="@{single.html}">Know Your Sources</a></h4>
+					<span class="article-meta">22 Feb, 2013 in <a href="#" title="View all posts in Website Dev">Website Dev</a></span>
+					<span class="like-count">2</span>
+				</li>
+				<li class="article-entry standard">
+					<h4><a href="single.html" th:href="@{single.html}">Validating a Website</a></h4>
+					<span class="article-meta">21 Feb, 2013 in <a href="#" title="View all posts in Website Dev">Website Dev</a></span>
+					<span class="like-count">3</span>
+				</li>
+			</ul>
+		</section>
+
+
+		<section class="span4 articles-list">
+			<h3>Latest Articles</h3>
+			<ul class="articles">
+				<li class="article-entry standard">
+					<h4><a href="single.html" th:href="@{single.html}">Integrating WordPress with Your Website</a></h4>
+					<span class="article-meta">25 Feb, 2013 in <a href="#" title="View all posts in Server &amp; Database">Server &amp; Database</a></span>
+					<span class="like-count">66</span>
+				</li>
+				<li class="article-entry standard">
+					<h4><a href="single.html" th:href="@{single.html}">Using Javascript</a></h4>
+					<span class="article-meta">25 Feb, 2013 in <a href="#" title="View all posts in Advanced Techniques">Advanced Techniques</a></span>
+					<span class="like-count">18</span>
+				</li>
+				<li class="article-entry image">
+					<h4><a href="single.html" th:href="@{single.html}">Using Images</a></h4>
+					<span class="article-meta">25 Feb, 2013 in <a href="#" title="View all posts in Designing in WordPress">Designing in WordPress</a></span>
+					<span class="like-count">7</span>
+				</li>
+				<li class="article-entry video">
+					<h4><a href="single.html" th:href="@{single.html}">Using Video</a></h4>
+					<span class="article-meta">24 Feb, 2013 in <a href="#" title="View all posts in WordPress Plugins">WordPress Plugins</a></span>
+					<span class="like-count">7</span>
+				</li>
+				<li class="article-entry standard">
+					<h4><a href="single.html" th:href="@{single.html}">WordPress Site Maintenance</a></h4>
+					<span class="article-meta">24 Feb, 2013 in <a href="#" title="View all posts in Website Dev">Website Dev</a></span>
+					<span class="like-count">15</span>
+				</li>
+				<li class="article-entry standard">
+					<h4><a href="single.html" th:href="@{single.html}">WordPress CSS Information and Techniques</a></h4>
+					<span class="article-meta">24 Feb, 2013 in <a href="#" title="View all posts in Theme Development">Theme Development</a></span>
+					<span class="like-count">1</span>
+				</li>
+			</ul>
+		</section>
+	</div>
+</div>
+<!-- end of page content -->
+
+<div layout:fragment="page_script">
+	<script type="text/javascript">
+		$(function(){
+			//回车登录事件
+			$(window).keydown(function (e) {
+				if (e.which == 13) {
+					login();
+				}
+			});
+		});
+		function login() {
+			var password = $("input[name=passWord]").val();
+			var userName = $("input[name=userName]").val();
+			var remember = $("input[name=remember]").val();
+			if (userName == null || userName == "") {
+				alert("用户名不能为空");
+				return false;
+			}
+			if (password == null || password == "") {
+				alert("密码不能为空");
+				return false;
+			}
+			$("#loginFrom").submit();
+		}
+	</script>
+</div>
+
+</body>
+</html>
