@@ -15,6 +15,10 @@ spring:
     encoding: UTF-8
 mybatis:
     mapperLocations: classpath:*/mapper/*.xml
+
+server:
+#  对外提供服务端口 生产使用21102
+  port: 9527
   #log
 logging:
     config: classpath:logback.xml

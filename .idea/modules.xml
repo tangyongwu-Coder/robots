@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/robots.iml" filepath="$PROJECT_DIR$/robots.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robots-biz/robots-biz.iml" filepath="$PROJECT_DIR$/robots-biz/robots-biz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robots-common/robots-common.iml" filepath="$PROJECT_DIR$/robots-common/robots-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robots-dal/robots-dal.iml" filepath="$PROJECT_DIR$/robots-dal/robots-dal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robots-handler/robots-handler.iml" filepath="$PROJECT_DIR$/robots-handler/robots-handler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robots-manager/robots-manager.iml" filepath="$PROJECT_DIR$/robots-manager/robots-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robots-service/robots-service.iml" filepath="$PROJECT_DIR$/robots-service/robots-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robots-web/robots-web.iml" filepath="$PROJECT_DIR$/robots-web/robots-web.iml" />
+    </modules>
+  </component>
+</project>
