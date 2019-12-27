@@ -153,6 +153,12 @@ body {
 	float: right;
 }
 
+.lowin .lowin-box li{
+	color:#FF3B30;
+	margin-top: 5px;
+	margin-bottom: 0
+}
+
 .lowin .lowin-box .lowin-input {
 	background-color: var(--color-grey);
 	color: var(--color-dark);

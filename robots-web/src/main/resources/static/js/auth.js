@@ -45,6 +45,7 @@ var Auth = {
 		password_group_height: 0,
 		lowin_register: document.querySelector('.lowin-register'),
 		box: document.getElementsByClassName('lowin-box'),
+		login_error:document.getElementsByClassName('login-error'),
 		option: {}
 	},
 
