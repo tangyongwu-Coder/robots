@@ -2,7 +2,7 @@
 <configuration>
 
     <property resource="logback.properties" />
-    <conversionRule conversionWord="logId" converterClass="com.sirius.config.UuidConvert"/>
+    <conversionRule conversionWord="logId" converterClass="com.sirius.robots.comm.config.UuidConvert"/>
 
     <!-- 管控台日志打印，发布生产需注释 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

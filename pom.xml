@@ -39,7 +39,7 @@
 
         <HikariCP.version>2.6.3</HikariCP.version>
         <spring.cloud.version>Edgware.SR2</spring.cloud.version>
-        <start-class>com.sirius.DemoApplication</start-class>
+        <start-class>DemoApplication</start-class>
         <dubbo.version>2.5.3</dubbo.version>
         <zkclient.version>0.1</zkclient.version>
         <zookeeper.version>3.5.1-alpha</zookeeper.version>
@@ -156,7 +156,7 @@
                 <artifactId>HikariCP</artifactId>
                 <version>${HikariCP.version}</version>
             </dependency>
-            <!--spring cloud-->
+            <!--spring cloud 相关依赖 start-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -164,6 +164,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!--spring cloud 相关依赖 end-->
+
 
             <dependency>
                 <groupId>com.github.binarywang</groupId>
@@ -251,6 +253,7 @@
     </dependencyManagement>
 
     <dependencies>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

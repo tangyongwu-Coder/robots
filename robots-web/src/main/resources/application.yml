@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://139.196.192.223:3306/DEMO
+    url: jdbc:mysql://139.196.192.223:3306/ROBOTS
     driver-class-name: com.mysql.jdbc.Driver
     username: test
     password: Test123456@
