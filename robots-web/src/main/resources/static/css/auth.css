@@ -138,7 +138,7 @@ body {
 }
 
 .lowin .lowin-box .lowin-group {
-	margin-bottom: 30px;
+	margin-bottom: 10px;
 }
 
 .lowin .lowin-box label {
@@ -149,14 +149,14 @@ body {
 	font-weight: 700;
 }
 
-.lowin .lowin-box label a {
-	float: right;
+.lowin .lowin-box li {
+	color: #FF3B30;
+	margin-top: 1px;
+	margin-bottom: 5px;
 }
 
-.lowin .lowin-box li{
-	color:#FF3B30;
-	margin-top: 5px;
-	margin-bottom: 0
+.lowin .lowin-box label a {
+	float: right;
 }
 
 .lowin .lowin-box .lowin-input {

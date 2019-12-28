@@ -1,3 +1,18 @@
+/** 邮箱校验 */
+var EMAIL_REGEX =/^[a-zA-Z0-9_\\-]{2,}@[a-zA-Z0-9_\\-]{2,}(\\.[a-zA-Z0-9_\\-]+){1,2}$/;
+/** 身份证格式校验 */
+var ID_CARD_REGEX = /(\\d{15})|(\\d{17}[0-9|X|x])$/;
+/** 密码格式校验 */
+var PASS_WORD_REGEX = /^(?![^a-zA-Z]+$)(?!\\D+$).{8,}$/;
+/** 姓名格式校验 */
+var NAME_REGEX = /^[\u0391-\uFFE5-\\·]{1,32}$/;
+
+/** 手机号码格式校验 */
+var MOBILE_REGEX = /([1]\\d{10}$)/;
+
+/** 用户名格式校验 */
+var USER_NAME_REGEX =  /[a-zA-Z]{1}[a-zA-Z0-9_]{6,15}/;
+
 
 function get(option){
     $.ajax({
@@ -49,16 +64,34 @@ function ajaxFrom(option) {
             if (data.success) {
                 window.location.href = option.successUrl;
             } else {
-                SweetAlert.warning('',data.errorMsg);
+                if(option.errorFun){
+                    option.errorFun(data);
+                }else{
+                    SweetAlert.warning('',data.errorMsg);
+                }
             }
         },
         error: errorCallBack
     });
 }
+function isNull(data) {
+    return data ==null|| data =='';
+}
 
+function nonNull(data) {
+    return !isNull(data);
+}
 
 function errorCallBack(data){
-    //请求异常的回调
-    alert("失败"+JSON.stringify(data));
     SweetAlert.error('',"系统繁忙,请稍后再试");
+}
+
+function showErrorMsg(errorLabel,msg){
+    errorLabel.style.display = 'block';
+    errorLabel.innerText = msg;
+}
+
+function hideErrorMsg(errorLabel){
+    errorLabel.style.display = 'none';
+    errorLabel.innerText = '';
 }

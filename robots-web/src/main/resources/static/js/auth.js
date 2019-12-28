@@ -9,6 +9,7 @@ function registerSet(timeOut){
 	Auth.vars.lowin_register.style.display = 'block';
 	Auth.vars.lowin_register.className += ' lowin-animated-flip';
 	Auth.setHeight(Auth.vars.lowin_register.offsetHeight);
+	hideErrorMsg(Auth.vars.register_error);
 }
 function forgotSet(timeOut){
 	Auth.vars.password_group.classList += ' lowin-animated';
@@ -22,6 +23,7 @@ function forgotSet(timeOut){
 	}
 	Auth.vars.login_btn.innerText = '忘记密码';
 	Auth.vars.lowin_p.innerText = '忘记密码';
+	hideErrorMsg(Auth.vars.login_error);
 	Auth.setHeight(Auth.vars.lowin_wrapper_height - Auth.vars.password_group_height);
 	Auth.vars.login_btn.addEventListener("click", (e) => {
 		fogotSub(e);
@@ -45,7 +47,10 @@ var Auth = {
 		password_group_height: 0,
 		lowin_register: document.querySelector('.lowin-register'),
 		box: document.getElementsByClassName('lowin-box'),
-		login_error:document.getElementsByClassName('login-error'),
+		login_error:document.querySelector('.login-error'),
+		register_error:document.querySelector('.register-error'),
+		loginFrom:document.getElementById("loginFrom"),
+		registerFrom:document.getElementById("registerFrom"),
 		option: {}
 	},
 
@@ -79,7 +84,7 @@ var Auth = {
 		},1000);
 
 		Auth.setHeight(Auth.vars.lowin_login.offsetHeight);
-
+		hideErrorMsg(Auth.vars.login_error);
 		e.preventDefault();
 	},
     forgot(e) {
@@ -119,6 +124,8 @@ var Auth = {
 		Auth.vars.password_group_height = Auth.vars.password_group.offsetHeight;
 		Auth.vars.lowin_wrapper_height = Auth.vars.lowin_wrapper.offsetHeight;
 
+		Auth.vars.login_error.style.display = 'none';
+		Auth.vars.register_error.style.display = 'none';
 		Auth.vars.option = option;
 		var type = option.type;
         if("register"==type){
@@ -159,17 +166,52 @@ var Auth = {
 	}
 }
 function loginSub() {
+	if(!loginValidate('loginFrom')){
+		return;
+	}
 	ajaxFrom({
 		url: '/user/login',
 		fromId: 'loginFrom',
-		successUrl:'/index'
+		successUrl:'/index',
+		errorFun:function (data) {
+			showErrorMsg(Auth.vars.login_error,data.errorMsg);
+		}
 	});
 }
+
+
+function loginValidate(fromId){
+	var formData = fromDataArr(fromId);
+	var loginName = formData.loginName;
+
+	if(isNull(loginName)){
+		showErrorMsg(Auth.vars.login_error,"用户名不能为空");
+		return false;
+	}
+	if(!USER_NAME_REGEX.test(loginName)){
+		showErrorMsg(Auth.vars.login_error,"用户名格式有误,请确认后再输入");
+		return false;
+	}
+	var passWord = formData.passWord;
+	if(isNull(passWord)){
+		showErrorMsg(Auth.vars.login_error,"密码不能为空");
+		return false;
+	}
+	if(!PASS_WORD_REGEX.test(passWord)){
+		showErrorMsg(Auth.vars.login_error,"密码格式有误,请确认后再输入");
+		return false;
+	}
+	return true;
+}
+
 function fogotSub() {
 	ajaxFrom({
 		url: '/user/forgot',
-		fromId: 'registerFrom',
-		successUrl:'/login'
+		fromId: 'loginFrom',
+		successUrl:'/login',
+		errorFun:function (data) {
+			showErrorMsg(Auth.vars.login_error,data.errorMsg);
+		}
 	});
 }
 
@@ -177,6 +219,9 @@ function registerSub() {
 	ajaxFrom({
 		url: '/user/register',
 		fromId: 'registerFrom',
-		successUrl:'/login'
+		successUrl:'/login',
+		errorFun:function (data) {
+			showErrorMsg(Auth.vars.register_error,data.errorMsg);
+		}
 	});
 }

@@ -27,7 +27,7 @@ public class UserRegisterReqDTO implements Serializable {
      * 用户名
      */
     @NotBlank(message = "用户名不能为空")
-    @Pattern(regexp = ValidatePattenUtil.USER_NAME_REGEX,message = "用户名必须为6-16位字母数字下划线组成且开头组成")
+    @Pattern(regexp = ValidatePattenUtil.USER_NAME_REGEX,message = "用户名必须是6-16位以字母开头且由字母数字下划线组成")
     private String loginName;
 
     /**
@@ -42,10 +42,10 @@ public class UserRegisterReqDTO implements Serializable {
     @NotBlank(message = "密码不能为空")
     @Pattern(regexp = ValidatePattenUtil.PASS_WORD_REGEX,message = "密码必须由字母+数字组合，长度大于8位")
     private String passWord;
+    @NotBlank(message = "确认密码密码不能为空")
     /**
      * 确认密码
      */
-    @NotBlank(message = "确认密码密码不能为空")
     @Pattern(regexp = ValidatePattenUtil.PASS_WORD_REGEX,message = "密码必须由字母+数字组合，长度大于8位")
     private String passWord2;
 
