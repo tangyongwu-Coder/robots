@@ -183,7 +183,7 @@ function loginSub() {
 function loginValidate(fromId){
 	var formData = fromDataArr(fromId);
 	var loginName = formData.loginName;
-	var errorLabel = Auth.vars.forgot_error;
+	var errorLabel = Auth.vars.login_error;
 	if(isNull(loginName)){
 		showErrorMsg(errorLabel,"用户名不能为空");
 		return false;
@@ -213,14 +213,14 @@ function forgotSub() {
 		fromId: 'forgotFrom',
 		successUrl:'/login',
 		errorFun:function (data) {
-			showErrorMsg(Auth.vars.login_error,data.errorMsg);
+			showErrorMsg(Auth.vars.forgot_error,data.errorMsg);
 		}
 	});
 }
 
 function forgotValidate(fromId){
 	var formData = fromDataArr(fromId);
-	var errorLabel = Auth.vars.login_error;
+	var errorLabel = Auth.vars.forgot_error;
 
 	var email = formData.email;
 	if(isNull(email)){
