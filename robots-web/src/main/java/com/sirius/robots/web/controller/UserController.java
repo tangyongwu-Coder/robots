@@ -1,12 +1,12 @@
 package com.sirius.robots.web.controller;
 
+import com.sirius.robots.comm.req.UserForgotReqDTO;
 import com.sirius.robots.comm.req.UserLoginReqDTO;
 import com.sirius.robots.comm.req.UserRegisterReqDTO;
 import com.sirius.robots.comm.res.Result;
 import com.sirius.robots.comm.util.LogUtil;
 import com.sirius.robots.comm.util.VerifyParamUtil;
 import com.sirius.robots.service.UserLoginService;
-import com.sirius.robots.web.config.PathUrl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -54,6 +54,16 @@ public class UserController {
         return Result.ok("成功");
     }
 
-
+    @ResponseBody
+    @RequestMapping(value ="/forgot", method = RequestMethod.POST)
+    public Result<String> forgot(@RequestBody UserForgotReqDTO reqDTO){
+        LogUtil.updateLogId(null);
+        log.info("用户找回密码,请求参数:{}",reqDTO);
+        VerifyParamUtil.validateObject(reqDTO);
+        long start = System.currentTimeMillis();
+        userLoginService.forgot(reqDTO);
+        log.info("用户找回密码-成功-耗时:{}ms,",System.currentTimeMillis()-start);
+        return Result.ok("成功");
+    }
 
 }

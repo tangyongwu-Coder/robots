@@ -34,7 +34,7 @@ public class UserRegisterReqDTO implements Serializable {
      * 邮箱
      */
     @NotBlank(message = "邮箱不能为空")
-    @Pattern(regexp = ValidatePattenUtil.EMAIL_REGEX,message = "邮箱格式不正确")
+    @Pattern(regexp = ValidatePattenUtil.EMAIL_REGEX,message = "邮箱格式不正确,,请重新输入")
     private String email;
     /**
      * 密码
@@ -42,10 +42,11 @@ public class UserRegisterReqDTO implements Serializable {
     @NotBlank(message = "密码不能为空")
     @Pattern(regexp = ValidatePattenUtil.PASS_WORD_REGEX,message = "密码必须由字母+数字组合，长度大于8位")
     private String passWord;
-    @NotBlank(message = "确认密码密码不能为空")
+
     /**
      * 确认密码
      */
+    @NotBlank(message = "确认密码密码不能为空")
     @Pattern(regexp = ValidatePattenUtil.PASS_WORD_REGEX,message = "密码必须由字母+数字组合，长度大于8位")
     private String passWord2;
 

@@ -9,7 +9,7 @@ package com.sirius.robots.comm.util;
 public class ValidatePattenUtil {
 
     /** 邮箱校验 */
-    public static final String EMAIL_REGEX ="^[a-zA-Z0-9_\\-]{2,}@[a-zA-Z0-9_\\-]{2,}(\\.[a-zA-Z0-9_\\-]+){1,2}$";
+    public static final String EMAIL_REGEX ="^[a-z0-9]+([._\\\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$";
     /** 身份证格式校验 */
     public static final String ID_CARD_REGEX = "(\\d{15})|(\\d{17}[0-9|X|x])$";
     /** 密码格式校验 */

@@ -21,20 +21,44 @@
 					<form id="loginFrom" onsubmit="return false" action="##" method="post">
 						<p class="lowin-p">登录</p>
 						<div class="lowin-group">
-							<label>用户名 <a href="#" class="login-back-link">登录?</a></label>
-							<input type="text" name="loginName" autocomplete="name" class="lowin-input">
+							<label>用户名</label>
+							<input type="text" name="loginName" autocomplete="name" placeholder="请输入用户名" class="lowin-input">
 						</div>
 						<div class="lowin-group password-group">
 							<label>密码 <a href="#" class="forgot-link">忘记密码?</a></label>
-							<input type="password" name="passWord" autocomplete="current-password" class="lowin-input">
+							<input type="password" name="passWord" autocomplete="current-password" placeholder="请输入密码" class="lowin-input">
 						</div>
 						<li class="login-error"></li>
-						<button class="lowin-btn login-btn">
+						<button class="lowin-btn" onclick="loginSub()">
 							登录
 						</button>
 
 						<div class="text-foot">
-							还没有账号? <a href="" class="register-link">注册</a>
+							还没有账号? <a href="" class="login-register-link">注册</a>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="lowin-box lowin-forgot">
+				<div class="lowin-box-inner">
+					<form id="forgotFrom" onsubmit="return false" action="##" method="post">
+						<p class="lowin-p">忘记密码</p>
+						<div class="lowin-group">
+							<label>邮箱 <a href="#" class="login-back-link">登录?</a></label>
+							<input type="email" autocomplete="email" name="email" placeholder="请输入邮箱" class="lowin-input">
+						</div>
+						<div class="lowin-group password-group">
+							<label>验证码</label>
+							<input type="password" name="passWord" autocomplete="current-password" placeholder="请输入验证码" class="lowin-input">
+						</div>
+						<li class="forgot-error"></li>
+						<button class="lowin-btn" onclick="forgotSub()">
+							找回密码
+						</button>
+
+						<div class="text-foot">
+							还没有账号? <a href="" class="forgot-register-link">注册</a>
 						</div>
 					</form>
 				</div>
@@ -46,19 +70,19 @@
 						<p>注册</p>
 						<div class="lowin-group">
 							<label>用户名</label>
-							<input type="text" name="loginName" autocomplete="name" class="lowin-input">
+							<input type="text" name="loginName" autocomplete="name" placeholder="6-16位以字母开头且由字母数字下划线组成" class="lowin-input">
 						</div>
 						<div class="lowin-group">
 							<label>邮箱</label>
-							<input type="email" autocomplete="email" name="email" class="lowin-input">
+							<input type="email" autocomplete="email" name="email" placeholder="请输入邮箱" class="lowin-input">
 						</div>
 						<div class="lowin-group">
 							<label>密码</label>
-							<input type="password" name="passWord" autocomplete="current-password" class="lowin-input">
+							<input type="password" name="passWord" autocomplete="current-password" placeholder="密码必须由字母+数字组合，长度大于8位" class="lowin-input">
 						</div>
 						<div class="lowin-group">
 							<label>确认密码</label>
-							<input type="password" name="passWord2" autocomplete="current-password" class="lowin-input">
+							<input type="password" name="passWord2" autocomplete="current-password" placeholder="请再次输入密码" class="lowin-input">
 						</div>
 						<li class="register-error"></li>
 						<button class="lowin-btn" onclick="registerSub()">

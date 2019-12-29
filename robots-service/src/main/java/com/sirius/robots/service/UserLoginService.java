@@ -4,6 +4,7 @@ import com.sirius.robots.comm.enums.DeleteFlagEnum;
 import com.sirius.robots.comm.enums.ErrorCodeEnum;
 import com.sirius.robots.comm.enums.FlagEnum;
 import com.sirius.robots.comm.exception.RobotsServiceException;
+import com.sirius.robots.comm.req.UserForgotReqDTO;
 import com.sirius.robots.comm.req.UserLoginReqDTO;
 import com.sirius.robots.comm.req.UserRegisterReqDTO;
 import com.sirius.robots.comm.util.BeanMapperUtil;
@@ -74,6 +75,16 @@ public class UserLoginService {
         userInfo.setUseAble(FlagEnum.TRUE.getCodeStr());
         userInfo.setIsManager(FlagEnum.FALSE.getCodeStr());
         userManager.addUser(userInfo);
+
+    }
+
+    /**
+     * 找回密码
+     *
+     * @param reqDTO    注册请求参数
+     */
+    public void forgot(UserForgotReqDTO reqDTO){
+
 
     }
 

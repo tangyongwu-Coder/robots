@@ -1,17 +1,19 @@
-/** 邮箱校验 */
-var EMAIL_REGEX =/^[a-zA-Z0-9_\\-]{2,}@[a-zA-Z0-9_\\-]{2,}(\\.[a-zA-Z0-9_\\-]+){1,2}$/;
+var ValidatePatten = {
+    /** 邮箱校验 */
+    EMAIL_REGEX : /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
 /** 身份证格式校验 */
-var ID_CARD_REGEX = /(\\d{15})|(\\d{17}[0-9|X|x])$/;
+    ID_CARD_REGEX : /(\\d{15})|(\\d{17}[0-9|X|x])$/,
 /** 密码格式校验 */
-var PASS_WORD_REGEX = /^(?![^a-zA-Z]+$)(?!\\D+$).{8,}$/;
+    PASS_WORD_REGEX : /^(?![^a-zA-Z]+$)(?!\\D+$).{8,}$/,
 /** 姓名格式校验 */
-var NAME_REGEX = /^[\u0391-\uFFE5-\\·]{1,32}$/;
+    NAME_REGEX : /^[\u0391-\uFFE5-\\·]{1,32}$/,
 
 /** 手机号码格式校验 */
-var MOBILE_REGEX = /([1]\\d{10}$)/;
+    MOBILE_REGEX : /([1]\\d{10}$)/,
 
 /** 用户名格式校验 */
-var USER_NAME_REGEX =  /[a-zA-Z]{1}[a-zA-Z0-9_]{6,15}/;
+    USER_NAME_REGEX :  /[a-zA-Z]{1}[a-zA-Z0-9_]{6,15}/,
+};
 
 
 function get(option){

@@ -61,7 +61,7 @@ public enum ErrorCodeEnum implements BaseErrorEnum {
 
     MSG_OUT_1000("S1000", "用户名重复,请重新输入"),
 
-    MSG_OUT_1001("S1001", "两次输入密码不一致,请重新确认后输入"),
+    MSG_OUT_1001("S1001", "两次输入密码不一致,请确认后重新输入"),
 
     MSG_OUT_1002("S1002", "账户或者密码不正确,请重新输入"),
     ;
