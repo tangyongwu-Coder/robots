@@ -6,6 +6,7 @@ import com.sirius.robots.comm.req.UserRegisterReqDTO;
 import com.sirius.robots.comm.res.Result;
 import com.sirius.robots.comm.util.LogUtil;
 import com.sirius.robots.comm.util.VerifyParamUtil;
+import com.sirius.robots.dal.model.UserInfo;
 import com.sirius.robots.service.UserLoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * 用户控制层
@@ -32,11 +36,14 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value ="/login", method = RequestMethod.POST)
-    public Result<String> login(@RequestBody UserLoginReqDTO reqDTO){
+    public Result<String> login(@RequestBody UserLoginReqDTO reqDTO,HttpServletRequest request){
         LogUtil.updateLogId(null);
         log.info("用户登录,请求参数:{}",reqDTO);
         VerifyParamUtil.validateObject(reqDTO);
-        userLoginService.login(reqDTO);
+        UserInfo userInfo = userLoginService.login(reqDTO);
+        //获取session并将userName存入session对象
+        HttpSession session = request.getSession();
+        session.setAttribute("userInfo", userInfo);
         long start = System.currentTimeMillis();
         log.info("用户登录-成功-耗时:{}ms,",System.currentTimeMillis()-start);
         return Result.ok("成功");

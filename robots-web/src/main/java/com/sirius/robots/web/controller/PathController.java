@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 /**
  * 路径控制
  *
@@ -22,9 +25,15 @@ public class PathController {
     private UserLoginService userLoginService;
 
     @RequestMapping(value ="/", method = RequestMethod.GET)
-    public String index(){
+    public String index(Model model){
         log.info("进入首页");
+        //查询用户信息
         return PathUrl.INDEX;
+    }
+
+    @RequestMapping(value ="/index", method = RequestMethod.GET)
+    public String index2(Model model){
+        return index(model);
     }
 
     @RequestMapping(value ="/login", method = RequestMethod.GET)
@@ -46,6 +55,22 @@ public class PathController {
         model.addAttribute("type", "forgot");
         return PathUrl.LOGIN;
     }
+    @RequestMapping(value ="/out", method = RequestMethod.GET)
+    public String out(HttpServletRequest request){
+        log.info("退出");
+        HttpSession session = request.getSession();
+        session.removeAttribute("userInfo");
+        return PathUrl.LOGIN;
+    }
+    @RequestMapping(value ="/userInfo", method = RequestMethod.GET)
+    public String userInfo(HttpServletRequest request){
+        log.info("用户信息");
+        HttpSession session = request.getSession();
+        session.removeAttribute("userInfo");
+        return PathUrl.LOGIN;
+    }
+
+
 
     public Boolean validateToken(){
         return Boolean.TRUE;

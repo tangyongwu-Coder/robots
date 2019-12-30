@@ -35,7 +35,7 @@ public class UserLoginService {
      *
      * @param reqDTO    登录请求参数
      */
-    public void login(UserLoginReqDTO reqDTO){
+    public UserInfo login(UserLoginReqDTO reqDTO){
         String loginName = reqDTO.getLoginName();
         UserInfo userInfo = userManager.selectByLoginUser(loginName);
         if(Objects.isNull(userInfo)){
@@ -46,6 +46,7 @@ public class UserLoginService {
         if(!passWord.equals(exictPassWord)){
             throw new RobotsServiceException(ErrorCodeEnum.MSG_OUT_1002);
         }
+        return userInfo;
     }
 
     /**
@@ -64,8 +65,8 @@ public class UserLoginService {
             //直接更新
             userInfo.setEmail(reqDTO.getEmail());
             userInfo.setPassWord(reqDTO.getPassWord());
-            userInfo.setUpdatedBy(userInfo.getId());
-            userManager.updateUser(userInfo);
+            userInfo.setUpdatedBy(userInfo.getId()+"");
+            userManager.edit(userInfo);
             return;
         }
         userInfo = BeanMapperUtil.objConvert(reqDTO,UserInfo.class);
@@ -74,7 +75,7 @@ public class UserLoginService {
         userInfo.setRememberMe(FlagEnum.FALSE.getCodeStr());
         userInfo.setUseAble(FlagEnum.TRUE.getCodeStr());
         userInfo.setIsManager(FlagEnum.FALSE.getCodeStr());
-        userManager.addUser(userInfo);
+        userManager.add(userInfo);
 
     }
 
