@@ -53,5 +53,5 @@ public interface BaseMapper<T> {
      * @param id 主键ID
      * @return 查询结果
      */
-    T selectByPrimaryKey(Integer id);
+    T selectByPrimaryKey(Long id);
 }

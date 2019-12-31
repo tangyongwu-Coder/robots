@@ -1,9 +1,8 @@
 package com.sirius.robots.web.controller;
 
-import com.sirius.robots.service.UserLoginService;
 import com.sirius.robots.web.config.PathUrl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +20,10 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Controller
 public class PathController {
-    @Autowired
-    private UserLoginService userLoginService;
 
     @RequestMapping(value ="/", method = RequestMethod.GET)
     public String index(Model model){
         log.info("进入首页");
-        //查询用户信息
         return PathUrl.INDEX;
     }
 
@@ -62,12 +58,12 @@ public class PathController {
         session.removeAttribute("userInfo");
         return PathUrl.LOGIN;
     }
-    @RequestMapping(value ="/userInfo", method = RequestMethod.GET)
+    @RequestMapping(value ="/account", method = RequestMethod.GET)
     public String userInfo(HttpServletRequest request){
         log.info("用户信息");
         HttpSession session = request.getSession();
         session.removeAttribute("userInfo");
-        return PathUrl.LOGIN;
+        return PathUrl.ACCOUNT;
     }
 
 

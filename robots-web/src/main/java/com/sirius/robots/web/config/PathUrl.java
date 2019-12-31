@@ -16,4 +16,9 @@ public class PathUrl {
      * 登录页面路径
      */
     public static final String LOGIN = "user/login";
+
+    /**
+     * 用户中心页面路径
+     */
+    public static final String ACCOUNT = "user/account";
 }
