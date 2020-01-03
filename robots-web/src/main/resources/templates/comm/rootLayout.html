@@ -2,48 +2,130 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
-    <!-- META TAGS -->
-    <meta charset="UTF-8">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>首页</title>
-    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" />
-    <meta name="keywords" content="">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" media='all' >
-    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}" media='all' >
-    <link rel="stylesheet" type="text/css" th:href="@{/css/nprogress.css}" media='all' >
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" media='all' >
-    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}" media='all' >
-    <link rel="stylesheet" type="text/css" th:href="@{/css/root.css}" media='all' >
-    <link rel="apple-touch-icon-precomposed" th:href="@{/images/icon.png}" >
-    <link rel="stylesheet" type="text/css" th:href="@{/css/sweet-alert.css}">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
 
-    <script th:src="@{/js/jquery-2.1.4.min.js}" ></script>
-    <script th:src="@{/js/nprogress.js}"></script>
-    <script th:src="@{/js/jquery.lazyload.min.js}"></script>
-    <script th:src="@{/js/sweet-alert.min.js}"></script>
-    <script th:src="@{/js/root.js}"></script>
-    <script th:src="@{/js/pop.js}"></script>
-    <!--[if gte IE 9]>
-    <script th:src="@{/js/jquery-1.11.1.min.js}" type="text/javascript"></script>
-    <script th:src="@{/js/html5shiv.min.js}" type="text/javascript"></script>
-    <script th:src="@{/js/respond.min.js}" type="text/javascript"></script>
-    <script th:src="@{/js/selectivizr-min.js}" type="text/javascript"></script>
-    <![endif]-->
+    <title>首页</title>
+
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" media='all'>
+    <link th:href="@{/css/style-responsive.css}"rel="stylesheet" type="text/css" media='all'>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script>window.location.href='upgrade-browser.html';</script>
+    <script th:src="@{/js/html5shiv.js}" type="text/javascript"></script>
+    <script th:src="@{/js/respond.min.js}" type="text/javascript"></script>
     <![endif]-->
     <div layout:fragment="head">
 
     </div>
 </head>
-<body layout:fragment="body">
+<body class="horizontal-menu-page">
 
-</body>
+<section>
 
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/index}">
+                    <img th:src="@{/images/logo.png}" alt="">
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active" ><a th:href="@{/index}">首页</a></li>
+                    <li ><a th:href="@{/back/index}">管理</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">UI Kits <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">General</a></li>
+                            <li><a href="#">Buttons</a></li>
+                            <li><a href="#">Widget</a></li>
+                            <li><a href="#">Slider</a></li>
+                            <li><a href="#">Many More</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Fontawesome</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Form Components <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Form Elements</a></li>
+                            <li><a href="#">Advanced Components</a></li>
+                            <li><a href="#">Form Wizard</a></li>
+                            <li><a href="#">Form Validation</a></li>
+                            <li><a href="#">Dropzone</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search">
+                            </div>
+                        </form>
+                    </li>
+                    <li th:if="${session.userInfo ==null}">
+                        <a th:href="@{/login}" class="dropdown-toggle">
+                            <img alt="" th:src="@{/images/photos/user-avatar.png}"> 登录
+                        </a>
+                    </li>
+                    <li th:if="${session.userInfo !=null}" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img alt="" th:src="@{/images/photos/user-avatar.png}">[[${session.userInfo.loginName}]]
+                            <b class="caret"></b>
+                        </a>
+                        <ul th:if="${session.userInfo !=null}" class="dropdown-menu">
+                            <li><a th:href="@{/account}">我的</a></li>
+                            <li><a href="#">设置</a></li>
+                            <li><a th:href="@{/out}">退出</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+
+    <!--body wrapper start-->
+    <div class="wrapper" layout:fragment="wrapper">
+        Body contents goes here
+    </div>
+    <!--body wrapper end-->
+
+    <!--footer section start-->
+    <footer class="sticky-footer" layout:fragment="footer">
+        Footer contents goes here
+    </footer>
+    <!--footer section end-->
+
+</section>
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{js/jquery-1.10.2.min.js}" type="text/javascript"></script>
+<script th:src="@{js/jquery-ui-1.9.2.custom.min.js}" type="text/javascript"></script>
+<script th:src="@{js/jquery-migrate-1.2.1.min.js}" type="text/javascript"></script>
+<script th:src="@{js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{js/modernizr.min.js}" type="text/javascript"></script>
+<script th:src="@{js/jquery.nicescroll.js}" type="text/javascript"></script>
+<!--common scripts for all pages-->
+<script th:src="@{js/scripts.js}" type="text/javascript"></script>
+<script th:src="@{js/root.js}" type="text/javascript"></script>
+<script th:src="@{js/fromData.js}" type="text/javascript"></script>
+<script th:src="@{js/pop.js}" type="text/javascript"></script>
 <div layout:fragment="javascript">
 
 </div>
+</body>
 </html>

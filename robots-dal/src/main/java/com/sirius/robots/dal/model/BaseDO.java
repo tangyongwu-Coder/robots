@@ -19,7 +19,7 @@ public class BaseDO implements Serializable {
     /**
      * 数据库主键
      */
-    private String id;
+    private Long id;
 
     /**
      * 创建时间

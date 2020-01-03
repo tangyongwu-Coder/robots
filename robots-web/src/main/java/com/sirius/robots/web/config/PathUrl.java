@@ -11,7 +11,7 @@ public class PathUrl {
     /**
      * 登录页面路径
      */
-    public static final String INDEX = "index";
+    public static final String INDEX = "my/index";
     /**
      * 登录页面路径
      */
@@ -21,4 +21,15 @@ public class PathUrl {
      * 用户中心页面路径
      */
     public static final String ACCOUNT = "user/account";
+
+
+    /**
+     * 后台-登录页面路径
+     */
+    public static final String BACK_INDEX = "back/index";
+
+    /**
+     * 后台-枚举设置
+     */
+    public static final String BACK_ENUMS = "back/enums";
 }

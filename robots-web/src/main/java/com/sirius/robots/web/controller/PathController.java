@@ -33,9 +33,8 @@ public class PathController {
     }
 
     @RequestMapping(value ="/login", method = RequestMethod.GET)
-    public String login(Model model){
+    public String login(){
         log.info("登陆");
-        model.addAttribute("type", "login");
         return PathUrl.LOGIN;
     }
     @RequestMapping(value ="/register", method = RequestMethod.GET)
@@ -59,10 +58,8 @@ public class PathController {
         return PathUrl.LOGIN;
     }
     @RequestMapping(value ="/account", method = RequestMethod.GET)
-    public String userInfo(HttpServletRequest request){
+    public String userInfo(){
         log.info("用户信息");
-        HttpSession session = request.getSession();
-        session.removeAttribute("userInfo");
         return PathUrl.ACCOUNT;
     }
 

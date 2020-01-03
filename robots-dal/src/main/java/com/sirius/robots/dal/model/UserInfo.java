@@ -5,19 +5,18 @@ import lombok.Data;
 import java.io.Serializable;
 
 import java.lang.Integer;
-import java.util.Date;
 
 /**
- * UserInfo实体类
+ * 用户信息表实体类
  * 
  * @author 孟星魂
- * @version 5.0 createTime: 2019-12-26
+ * @version 5.0 createTime: 2019-12-30
   */
 @Data
 public class UserInfo extends BaseDO implements Serializable {
 
-	private static final long serialVersionUID = 6997737496777017854L;
-	/**
+	private static final long serialVersionUID=1577696081709L;
+   /**
     * 登陆用户名
     */
 	private String loginName;
@@ -49,5 +48,4 @@ public class UserInfo extends BaseDO implements Serializable {
     * 1 是管理员 0 不是管理员
     */
 	private String isManager;
-
 }

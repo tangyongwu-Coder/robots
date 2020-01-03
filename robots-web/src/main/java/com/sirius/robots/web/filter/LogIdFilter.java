@@ -46,7 +46,7 @@ public class LogIdFilter implements Filter {
         HttpSession session = request.getSession();
         Object userInfo = session.getAttribute("userInfo");
         if(Objects.isNull(userInfo)){
-            request.getRequestDispatcher("/user/login").forward(servletRequest, servletResponse);
+            request.getRequestDispatcher("/login").forward(servletRequest, servletResponse);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

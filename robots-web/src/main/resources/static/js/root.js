@@ -1,3 +1,4 @@
+
 var ValidatePatten = {
     /** 邮箱校验 */
     EMAIL_REGEX : /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
@@ -16,6 +17,25 @@ var ValidatePatten = {
 };
 
 
+$.validator.addMethod("userNameCheck",function(value,element) {
+    return this.optional(element) || ValidatePatten.USER_NAME_REGEX.test(value);
+},"用户名格式不正确");
+
+$.validator.addMethod("mobileCheck",function(value,element) {
+    return this.optional(element) || ValidatePatten.MOBILE_REGEX.test(value);
+},"手机号格式不正确");
+$.validator.addMethod("nameCheck",function(value,element) {
+    return this.optional(element) || ValidatePatten.NAME_REGEX.test(value);
+},"姓名格式不正确");
+$.validator.addMethod("passWordCheck",function(value,element) {
+    return this.optional(element) || ValidatePatten.PASS_WORD_REGEX.test(value);
+},"密码格式不正确");
+$.validator.addMethod("idCardCheck",function(value,element) {
+    return this.optional(element) || ValidatePatten.ID_CARD_REGEX.test(value);
+},"身份证格式不正确");
+$.validator.addMethod("emailCheck",function(value,element) {
+    return this.optional(element) || ValidatePatten.EMAIL_REGEX.test(value);
+},"邮箱格式不正确");
 function get(option){
     $.ajax({
         //接口地址
@@ -88,12 +108,7 @@ function errorCallBack(data){
     SweetAlert.error('',"系统繁忙,请稍后再试");
 }
 
-function showErrorMsg(errorLabel,msg){
-    errorLabel.style.display = 'block';
-    errorLabel.innerText = msg;
-}
 
-function hideErrorMsg(errorLabel){
-    errorLabel.style.display = 'none';
-    errorLabel.innerText = '';
+function a() {
+
 }
