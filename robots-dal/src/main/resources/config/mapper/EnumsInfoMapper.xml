@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sirius.robots.dal.mapper.EnumsInfoMapper">
+
+	<resultMap id="BaseResultMap" type="com.sirius.robots.dal.model.EnumsInfo">
+		<result column="ID"		 jdbcType="INTEGER"		 property="id"/>
+		<result column="ENUM_TYPE"		 jdbcType="VARCHAR"		 property="enumType"/>
+		<result column="ENUM_KEY"		 jdbcType="VARCHAR"		 property="enumKey"/>
+		<result column="ENUM_VALUE"		 jdbcType="VARCHAR"		 property="enumValue"/>
+		<result column="ENUM_DESC"		 jdbcType="VARCHAR"		 property="enumDesc"/>
+		<result column="ENUM_STATUS"		 jdbcType="VARCHAR"		 property="enumStatus"/>
+		<result column="DELETE_FLAG"		 jdbcType="TINYINT"		 property="deleteFlag"/>
+		<result column="CREATED_AT"		 jdbcType="TIMESTAMP"		 property="createdAt"/>
+		<result column="CREATED_BY"		 jdbcType="VARCHAR"		 property="createdBy"/>
+		<result column="UPDATED_AT"		 jdbcType="TIMESTAMP"		 property="updatedAt"/>
+		<result column="UPDATED_BY"		 jdbcType="VARCHAR"		 property="updatedBy"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		 ID, ENUM_TYPE, ENUM_KEY, ENUM_VALUE, ENUM_DESC, ENUM_STATUS,
+		 DELETE_FLAG, CREATED_AT, CREATED_BY, UPDATED_AT, UPDATED_BY
+
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_ENUMS_INFO
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</select>
+	<insert id="insert" parameterType="com.sirius.robots.dal.model.EnumsInfo" useGeneratedKeys="true"
+				keyProperty="id">
+		INSERT INTO T_ENUMS_INFO(
+		 ENUM_TYPE, ENUM_KEY, ENUM_VALUE, ENUM_DESC, ENUM_STATUS,
+		 DELETE_FLAG, CREATED_AT, CREATED_BY
+		 )VALUES(
+			#{enumType,jdbcType=VARCHAR},#{enumKey,jdbcType=VARCHAR},#{enumValue,jdbcType=VARCHAR},#{enumDesc,jdbcType=VARCHAR},#{enumStatus,jdbcType=VARCHAR},
+		#{deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{createdBy,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true"
+>
+		INSERT INTO T_ENUMS_INFO(
+		 ENUM_TYPE, ENUM_KEY, ENUM_VALUE, ENUM_DESC, ENUM_STATUS,
+		 DELETE_FLAG, CREATED_AT, CREATED_BY
+		 )VALUES
+		<foreach collection="list" index="index" item="item" separator=",">
+		(
+		#{item.enumType,jdbcType=VARCHAR},#{item.enumKey,jdbcType=VARCHAR},#{item.enumValue,jdbcType=VARCHAR},#{item.enumDesc,jdbcType=VARCHAR},#{item.enumStatus,jdbcType=VARCHAR},
+		#{item.deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{item.createdBy,jdbcType=VARCHAR}
+		)
+		</foreach>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.sirius.robots.dal.model.EnumsInfo">
+		UPDATE T_ENUMS_INFO
+		<set>
+			<if test="enumType != null">
+		        ENUM_TYPE = #{enumType,jdbcType=VARCHAR},
+			</if>
+			<if test="enumKey != null">
+		        ENUM_KEY = #{enumKey,jdbcType=VARCHAR},
+			</if>
+			<if test="enumValue != null">
+		        ENUM_VALUE = #{enumValue,jdbcType=VARCHAR},
+			</if>
+			<if test="enumDesc != null">
+		        ENUM_DESC = #{enumDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="enumStatus != null">
+		        ENUM_STATUS = #{enumStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="deleteFlag != null">
+		        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+			</if>
+			UPDATED_AT = CURRENT_TIMESTAMP,
+			<if test="updatedBy != null">
+		        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="delete" parameterType="com.sirius.robots.dal.model.EnumsInfo">
+		UPDATE T_ENUMS_INFO
+		SET
+		<if test="updatedBy != null">
+			UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+		</if>
+		UPDATED_AT = CURRENT_TIMESTAMP,
+		DELETE_FLAG=1
+		WHERE id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<select id="selectBySelective" parameterType="com.sirius.robots.dal.model.EnumsInfo"
+					resultMap="BaseResultMap">
+			SELECT
+			<include refid="Base_Column_List"/>
+			FROM T_ENUMS_INFO
+			<where>
+				<if test="id != null">
+				AND ID = #{id,jdbcType=INTEGER}
+				</if>
+				<if test="enumType != null and enumType != ''">
+				AND ENUM_TYPE = #{enumType,jdbcType=VARCHAR}
+				</if>
+				<if test="enumKey != null and enumKey != ''">
+				AND ENUM_KEY = #{enumKey,jdbcType=VARCHAR}
+				</if>
+				<if test="enumValue != null and enumValue != ''">
+				AND ENUM_VALUE = #{enumValue,jdbcType=VARCHAR}
+				</if>
+				<if test="enumDesc != null and enumDesc != ''">
+				AND ENUM_DESC = #{enumDesc,jdbcType=VARCHAR}
+				</if>
+				<if test="enumStatus != null and enumStatus != ''">
+				AND ENUM_STATUS = #{enumStatus,jdbcType=VARCHAR}
+				</if>
+				<if test="deleteFlag != null">
+				AND DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT}
+				</if>
+				<if test="createdAt != null">
+				AND CREATED_AT = #{createdAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="createdBy != null and createdBy != ''">
+				AND CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+				</if>
+				<if test="updatedAt != null">
+				AND UPDATED_AT = #{updatedAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="updatedBy != null and updatedBy != ''">
+				AND UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+				</if>
+		</where>
+		ORDER BY ID DESC
+	</select>
+
+</mapper>

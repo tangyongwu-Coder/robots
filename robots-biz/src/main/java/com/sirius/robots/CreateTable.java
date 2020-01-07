@@ -29,7 +29,7 @@ public class CreateTable {
     private final static String managerPackageName =  "com.sirius.robots.manager";
 
 
-    private final static Boolean managerFlag = Boolean.FALSE;
+    private final static Boolean managerFlag = Boolean.TRUE;
 	//实体类包
 	private static String entityPackageBeanName = dalName + "model";
 
@@ -62,7 +62,7 @@ public class CreateTable {
 	private final static String CREATED_BY = "CREATED_BY";
 	private final static String UPDATED_AT = "UPDATED_AT";
 	private final static String UPDATED_BY = "UPDATED_BY";
-	private final static String[] tables = {"T_USER_INFO",};
+	private final static String[] tables = {"T_ENUM_TYPE_INFO",};
 	
 	
 	private static StringBuffer importString=null;

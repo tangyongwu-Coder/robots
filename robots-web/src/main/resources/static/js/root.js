@@ -1,4 +1,3 @@
-
 var ValidatePatten = {
     /** 邮箱校验 */
     EMAIL_REGEX : /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
@@ -36,66 +35,98 @@ $.validator.addMethod("idCardCheck",function(value,element) {
 $.validator.addMethod("emailCheck",function(value,element) {
     return this.optional(element) || ValidatePatten.EMAIL_REGEX.test(value);
 },"邮箱格式不正确");
-function get(option){
-    $.ajax({
-        //接口地址
-        url: option.url,
-        type: 'GET',
-        dataType: "json",//预期服务器返回的数据类型
-        data: option.data,
-        async: false,
-        cache: false,
-        contentType:"application/json",
-        processData: false,
-        success: option.callBack,
-        error: errorCallBack
-    });
-}
 
-function post(option){
-    $.ajax({
-        //接口地址
-        url: option.url,
-        type: 'POST',
-        dataType: "json",//预期服务器返回的数据类型
-        data: option.data,
-        async: false,
-        cache: false,
-        contentType:"application/json",
-        processData: false,
-        success: option.callBack,
-        error: errorCallBack
-    });
-}
+var Query = {
+    get : function(option) {
+        $.ajax({
+            //接口地址
+            url: option.url,
+            type: 'GET',
+            dataType: "json",//预期服务器返回的数据类型
+            data: option.data,
+            async: false,
+            cache: false,
+            contentType: "application/json",
+            processData: false,
+            success: option.success,
+            error: errorCallBack
+        });
+    },
 
+    post : function(option){
+        $.ajax({
+            //接口地址
+            url: option.url,
+            type: 'POST',
+            dataType: "json",//预期服务器返回的数据类型
+            data: option.data,
+            async: false,
+            cache: false,
+            contentType:"application/json",
+            processData: false,
+            success: option.success,
+            error: errorCallBack
+        });
+    },
 
-function ajaxFrom(option) {
-    var formData = fromDataArr(option.fromId);
-    $.ajax({
-        //接口地址
-        url: option.url,
-        type: 'POST',
-        dataType: "json",//预期服务器返回的数据类型
-        data: JSON.stringify(formData),
-        async: false,
-        cache: false,
-        contentType:"application/json",
-        processData: false,
-        success: function(data) {
-            //成功的回调
-            if (data.success) {
-                window.location.href = option.successUrl;
-            } else {
-                if(option.errorFun){
-                    option.errorFun(data);
-                }else{
-                    SweetAlert.warning('',data.errorMsg);
+    ajaxFrom : function(option) {
+        var formData = fromDataArr(option.fromId);
+        $.ajax({
+            //接口地址
+            url: option.url,
+            type: 'POST',
+            dataType: "json",//预期服务器返回的数据类型
+            data: JSON.stringify(formData),
+            async: false,
+            cache: false,
+            contentType:"application/json",
+            processData: false,
+            success: function(data) {
+                //成功的回调
+                if (data.success) {
+                    window.location.href = option.successUrl;
+                } else {
+                    if(option.errorFun){
+                        option.errorFun(data);
+                    }else{
+                        SweetAlert.warning('',data.errorMsg);
+                    }
                 }
-            }
-        },
-        error: errorCallBack
-    });
+            },
+            error: errorCallBack
+        });
+    }
+};
+
+function pageQuery(aoData){
+    var query = {};
+    var pageDTO = {};
+    var start = 0;
+    var pageSize = 10;
+    for(var i = 0 ;i<aoData.length-1 ;i++){
+        var data = aoData[i];
+        if('iDisplayStart'==data.name){
+            start = data.value;
+        }else if('iDisplayLength'==data.name){
+            pageSize = data.value;
+        }
+    }
+    pageDTO.page = start/pageSize + 1;
+    pageDTO.page_size = pageSize;
+    query.pageDTO = pageDTO;
+    return JSON.stringify(query);
 }
+
+function pageResult(data){
+    var result = {};
+    result.result = data.result;
+    result.draw = data.page;
+    result.iTotalRecords = data.count;
+    result.iTotalDisplayRecords = data.count;
+    return result;
+}
+
+
 function isNull(data) {
     return data ==null|| data =='';
 }
@@ -109,6 +140,3 @@ function errorCallBack(data){
 }
 
 
-function a() {
-
-}

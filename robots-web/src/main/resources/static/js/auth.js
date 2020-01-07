@@ -42,7 +42,7 @@ function loginSub() {
 	if(!validRet){
 		return;
 	}
-	ajaxFrom({
+	Query.ajaxFrom({
 		url: '/user/login',
 		fromId: 'loginFrom',
 		successUrl:'/index',
@@ -56,7 +56,7 @@ function forgotSub() {
 	if(!forgotValidate('forgotFrom')) {
 		return;
 	}
-	ajaxFrom({
+	Query.ajaxFrom({
 		url: '/user/forgot',
 		fromId: 'forgotFrom',
 		successUrl:'/login',
@@ -95,7 +95,7 @@ function registerSub() {
 	if(!registerValidate('registerFrom')) {
 		return;
 	}
-	ajaxFrom({
+	Query.ajaxFrom({
 		url: '/user/register',
 		fromId: 'registerFrom',
 		successUrl:'/login',

@@ -44,10 +44,7 @@ public class PageDTO<T> implements Serializable{
     @ApiModelProperty("总页数")
     @JsonProperty("pages")
     private Integer pages;
-    /** 总记录数 */
-    @ApiModelProperty("总记录数")
-    @JsonProperty("size")
-    private Integer size;
+
     /** 分页查询结果集 */
     @ApiModelProperty("查询结果集")
     private List<T> result;
@@ -75,7 +72,6 @@ public class PageDTO<T> implements Serializable{
             this.count = page.getTotal();
             this.pages = page.getPages();
             this.result = page.getResult();
-            this.size = page.size();
         }
     }
 
