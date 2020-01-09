@@ -1,16 +1,7 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="~{comm/backLayout}">
-<div layout:fragment="head">
-    <!--dynamic table-->
-    <link th:href="@{/js/advanced-datatable/css/demo_page.css}" rel="stylesheet" />
-    <link th:href="@{/js/advanced-datatable/css/demo_table.css}" rel="stylesheet" />
-    <link rel="stylesheet"th:href="@{/js/data-tables/DT_bootstrap.css}" />
-    <!--pickers css-->
-    <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-timepicker/css/timepicker.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-datepicker/css/datepicker-custom.css}" />
-</div>
+      layout:decorate="~{comm/pageLayout}">
 <body>
 <!--body wrapper start-->
 <div class="wrapper" layout:fragment="wrapper">
@@ -18,88 +9,203 @@
         <div class="col-sm-12">
             <section class="panel">
                 <header class="panel-heading">
-                    Dynamic Table
-                    <span class="tools pull-right">
-                        <a href="javascript:;" class="fa fa-chevron-down"></a>
-                        <a href="javascript:;" class="fa fa-times"></a>
-                    </span>
+                    枚举信息
+                    <span class="pull-right">
+                    <a class="btn btn-default" data-toggle="modal" href="#addModal">新增</a>
+             </span>
                 </header>
                 <div class="panel-body">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" id="enumQueryFrom">
                         <div class="form-group">
                             <label class="col-md-2 control-label">枚举类型:</label>
                             <div class="col-md-2">
-                                <select class="form-control m-bot15"
-                                        data-url="/enums/type" data-select="ALL">
+                                <select class="form-control m-bot15" name="enumType"
+                                        data-url="/enums/type">
                                 </select>
                             </div>
-                            <label class="col-md-2 control-label">状态:</label>
-                            <div class="col-md-2">
-                                <select class="form-control m-bot15"
-                                        data-resource="StatusEnum" data-select="NORMAL">
-                                </select>
+                            <label class="control-label col-md-3">创建时间:</label>
+                            <div class="col-md-4">
+                                <div class="input-group input-large custom-date-range" data-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control dpd1" name="beginDate">
+                                    <span class="input-group-addon">~</span>
+                                    <input type="text" class="form-control dpd2" name="endDate">
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">创建时间:</label>
-                            <div class="col-md-4">
-                                <div class="input-group input-large custom-date-range" data-date="13/07/2013" data-date-format="mm/dd/yyyy">
-                                    <input type="text" class="form-control dpd1" name="from">
-                                    <span class="input-group-addon">~</span>
-                                    <input type="text" class="form-control dpd2" name="to">
-                                </div>
+                            <label class="col-md-2 control-label">状态:</label>
+                            <div class="col-md-2">
+                                <select class="form-control m-bot15" name="enumStatus"
+                                        data-resource="StatusEnum">
+                                </select>
                             </div>
+                        </div>
+                        <div class="form-group form-button">
+                            <button class="btn btn-default button-right" type="button" data-type="reset">重置</button>
+                            <button class="btn btn-info button-right" type="button" data-type="query">查询</button>
                         </div>
                     </form>
 
 
                     <div class="adv-table">
-                        <table  class="display table table-bordered table-striped" id="dynamic-table">
+                        <table  class="display table table-bordered table-striped" id="enums-table">
                             <thead>
                             <tr>
+                                <th class="center">编号</th>
                                 <th class="center">枚举类型</th>
                                 <th class="center">枚举编码</th>
-                                <th class="center hidden-phone">枚举值</th>
-                                <th class="center hidden-phone">状态</th>
-                                <th class="center hidden-phone">时间</th>
+                                <th class="center">枚举值</th>
+                                <th class="center">状态</th>
+                                <th class="center">时间</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
+                                <th class="center">编号</th>
                                 <th class="center">枚举类型</th>
                                 <th class="center">枚举编码</th>
-                                <th class="center hidden-phone">枚举值</th>
-                                <th class="center hidden-phone">时间</th>
+                                <th class="center">枚举值</th>
+                                <th class="center">状态</th>
+                                <th class="center">时间</th>
                             </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="width: 900px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">新增枚举</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form onsubmit="return false" action="##" method="post" class="form-horizontal" id="addFrom">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-1 modal-label">枚举类型:</label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" name="enumType" required placeholder="枚举类型">
+                                        </div>
+                                        <button type="button" class="btn spinner-up btn-primary" onclick="addOneEle()">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                        <button type="button" class="btn spinner-down btn-warning" onclick="deleteOneEle()">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-group group-list" >
+                                        <label class="col-md-1 control-label modal-label">枚举KEY:</label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" name="enums[0]enumKey" required placeholder="枚举KEY">
+                                        </div>
+                                        <label class="col-md-1 control-label modal-label">枚举值:</label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" name="enums[0]enumValue" required placeholder="枚举值">
+                                        </div>
+                                        <label class="col-md-1 control-label modal-label">枚举描述:</label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" name="enums[0]enumDesc" required placeholder="枚举描述">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-info" type="submit" onclick="addSub()">确定</button>
+                                <button data-dismiss="modal" class="btn btn-primary" type="button">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal -->
             </section>
         </div>
     </div>
 </div>
 <!--body wrapper end-->
-<div layout:fragment="javascript">
-    <!--dynamic table-->
-    <script type="text/javascript" language="javascript" th:src="@{/js/advanced-datatable/js/jquery.dataTables.js}"></script>
-    <script type="text/javascript" th:src="@{/js/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
-    <script type="text/javascript" th:src="@{/js/data-tables/DT_bootstrap.js}"></script>
-    <script type="text/javascript" th:src="@{/js/page.js}"></script>
-    <script type="text/javascript" th:src="@{/js/enums.js}"></script>
-
-
+<div layout:fragment="javascript2">
     <!--pickers initialization-->
     <script th:src="@{/js/pickers-init.js}"></script>
     <script>
         $(document).ready(function() {
-            var config = initTableConfig({
+            initTable({
+                fromId:'enums-table',
+                queryFromId:'enumQueryFrom',
                 url:'/enums/page',
-                columns :['idx','random','name','phone','phone']
+                columns :[
+                    {
+                        name:'id',
+                    },
+                    {
+                        name:'enumType',
+                        type:dataType.ENUM,
+                        enumUrl:'/enums/type',
+                        enumCode:'typeCode',
+                        enumMsg:'typeName',
+                    },
+                    {
+                        name:'enumKey',
+                    },
+                    {
+                        name:'enumValue',
+                    },
+                    {
+                        name:'enumStatus',
+                        type:dataType.STATUS,
+
+                    }, {
+                        name:'createdAt',
+                        type:dataType.DATA_TIME,
+                    }],
             });
-            table = $('#dynamic-table').DataTable(config);
         } );
 
+        function addOneEle() {
+            var from = document.getElementById('addFrom');
+            var childs = getChildNodesByClass(from,'group-list');
+            var idx = childs.length;
+            var groupDiv = document.createElement('div');
+            groupDiv.className = 'form-group group-list';
+            groupDiv.innerHTML = '<label class="col-md-1 control-label modal-label">枚举KEY:</label>'+
+                    '<div class="col-md-2">'+
+                    '<input type="text" class="form-control" name="enums['+idx+']enumKey" required placeholder="枚举KEY">'+
+                    '</div>'+
+                    '<label class="col-md-1 control-label modal-label">枚举值:</label>'+
+                    '<div class="col-md-2">'+
+                    '<input type="text" class="form-control" name="enums['+idx+']enumValue" required placeholder="枚举值">'+
+                    '</div>'+
+                    '<label class="col-md-1 control-label modal-label">枚举描述:</label>'+
+                    '<div class="col-md-2">'+
+                    '<input type="text" class="form-control" name="enums['+idx+']enumDesc" required placeholder="枚举描述">'+
+                    '</div>';
+            from.appendChild(groupDiv);
+        }
+        function deleteOneEle() {
+            var from = document.getElementById('addFrom');
+            var childs = getChildNodesByClass(from,'group-list');
+            if(childs.length <=1){
+                return;
+            }
+            var lc=from.lastChild;   //获得s的最后一个子节点
+            from.removeChild(lc);
+        }
+
+        function addSub() {
+            var validRet = $("#addFrom").valid();
+            if(!validRet){
+                return;
+            }
+            Query.ajaxFrom({
+                url: '/enums/edit',
+                fromId: 'addFrom',
+                successUrl:'/back/enums',
+                errorFun:function (data) {
+                    SweetAlert.warning('',data.errorMsg);
+                }
+            });
+        }
     </script>
 </div>
 </body>

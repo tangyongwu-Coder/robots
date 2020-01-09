@@ -1,11 +1,14 @@
 package com.sirius.robots.web.controller;
 
 import com.sirius.robots.comm.bo.PageDTO;
-import com.sirius.robots.comm.req.PageQueryReqDTO;
 import com.sirius.robots.comm.res.Result;
 import com.sirius.robots.comm.util.LogUtil;
+import com.sirius.robots.comm.util.VerifyParamUtil;
 import com.sirius.robots.dal.model.EnumTypeInfo;
+import com.sirius.robots.dal.model.EnumsInfo;
 import com.sirius.robots.service.EnumsService;
+import com.sirius.robots.service.model.req.EnumsQueryReqDTO;
+import com.sirius.robots.service.model.req.EnumsReqDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -44,39 +47,24 @@ public class EnumController {
     }
     @ResponseBody
     @RequestMapping(value ="/page", method = RequestMethod.POST)
-    public Result<PageDTO<Map<String,Object>>> page(@RequestBody PageQueryReqDTO reqDTO){
+    public Result<PageDTO<EnumsInfo>> page(@RequestBody EnumsQueryReqDTO reqDTO){
         LogUtil.updateLogId(null);
         log.info("获取枚举,请求参数:{}",reqDTO);
         long start = System.currentTimeMillis();
-        List<Map<String, Object>> data = init(reqDTO.getPageDTO());
+        PageDTO<EnumsInfo> data = enumsService.queryPage(reqDTO);
         log.info("获取枚举-成功-耗时:{}ms,",System.currentTimeMillis()-start);
-        PageDTO<Map<String, Object>> pageInfo = new PageDTO<>();
-        pageInfo.setPage(1);
-        pageInfo.setPageSize(10);
-        pageInfo.setCount(100L);
-        pageInfo.setPages(10);
-        pageInfo.setResult(data);
-        return Result.ok(pageInfo);
+        return Result.ok(data);
     }
 
-    private List<Map<String,Object>> init(PageDTO pageDTO){
-        List<Map<String,Object>> list = new ArrayList<>();
-        Integer page = pageDTO.getPage();
-        Integer pageSize = pageDTO.getPageSize();
-        for (int i = (page-1) * pageSize; i < pageSize *page; i++) {
-            list.add(initMap(i));
-        }
-
-        return list;
-    }
-
-    private Map<String,Object> initMap(int i){
-        Random random = new Random();
-        Map<String,Object> map = new HashMap<>();
-        map.put("idx",i);
-        map.put("random",random.nextInt(5));
-        map.put("name",random.nextInt(2));
-        map.put("phone",random.nextInt(10));
-        return map;
+    @ResponseBody
+    @RequestMapping(value ="/edit", method = RequestMethod.POST)
+    public Result<String> edit(@RequestBody EnumsReqDTO reqDTO){
+        LogUtil.updateLogId(null);
+        log.info("枚举新增/修改,请求参数:{}",reqDTO);
+        VerifyParamUtil.validateObject(reqDTO);
+        enumsService.edit(reqDTO);
+        long start = System.currentTimeMillis();
+        log.info("枚举新增/修改-成功-耗时:{}ms,",System.currentTimeMillis()-start);
+        return Result.ok("成功");
     }
 }

@@ -1,8 +1,8 @@
 package com.sirius.robots.web.controller;
 
-import com.sirius.robots.comm.req.UserForgotReqDTO;
-import com.sirius.robots.comm.req.UserLoginReqDTO;
-import com.sirius.robots.comm.req.UserRegisterReqDTO;
+import com.sirius.robots.service.model.req.UserForgotReqDTO;
+import com.sirius.robots.service.model.req.UserLoginReqDTO;
+import com.sirius.robots.service.model.req.UserRegisterReqDTO;
 import com.sirius.robots.comm.res.Result;
 import com.sirius.robots.comm.util.LogUtil;
 import com.sirius.robots.comm.util.VerifyParamUtil;

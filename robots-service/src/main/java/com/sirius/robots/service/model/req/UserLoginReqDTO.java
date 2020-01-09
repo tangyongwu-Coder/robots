@@ -1,4 +1,4 @@
-package com.sirius.robots.comm.req;
+package com.sirius.robots.service.model.req;
 
 
 import com.sirius.robots.comm.util.ValidatePattenUtil;

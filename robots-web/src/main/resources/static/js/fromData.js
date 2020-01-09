@@ -1,13 +1,17 @@
 //获取指定form中的所有的<input>对象
 function getElements(formId) {
-    var form = document.getElementById(formId);
-    var elements = new Array();
-    var tagElements = form.getElementsByTagName('input');
-    for (var j = 0; j < tagElements.length; j++){
-        elements.push(tagElements[j]);
+    var from = document.getElementById(formId);
+    var data = [];
+    processEle(from,data,'input');
+    processEle(from,data,'select');
+    return data;
+}
 
+function processEle(from,data,type) {
+    var tagElements = from.getElementsByTagName(type);
+    for (var j = 0; j < tagElements.length; j++){
+        data.push(tagElements[j]);
     }
-    return elements;
 }
 
 //获取单个input中的【name,value】数组
@@ -17,16 +21,24 @@ function inputSelector(element) {
 }
 
 function input(element) {
-    switch (element.type.toLowerCase()) {
-        case 'submit':
-        case 'hidden':
-        case 'password':
-        case 'email':
-        case 'text':
-            return [element.name, element.value];
-        case 'checkbox':
-        case 'radio':
-            return inputSelector(element);
+    if (typeof element.type == typeof undefined) {
+        return false;
+    }
+    var tagName = element.tagName.toLowerCase();
+    if('input' ==tagName){
+        switch (element.type.toLowerCase()) {
+            case 'submit':
+            case 'hidden':
+            case 'password':
+            case 'email':
+            case 'text':
+                return [element.name, element.value];
+            case 'checkbox':
+            case 'radio':
+                return inputSelector(element);
+        }
+    }else if('select' == tagName){
+        return [element.name, element.value];
     }
     return false;
 }
@@ -70,17 +82,65 @@ function serializeForm(formId) {
 //调用方法
 function fromDataArr(formId) {
     var elements = getElements(formId);
-    var queryComponents = {};
+    var data = {};
 
     for (var i = 0; i < elements.length; i++) {
         var parameter = input(elements[i]);
         if (parameter) {
-            var key = encodeURIComponent(parameter[0]);
-            if (key.length == 0) {
+            var key = parameter[0];
+            var encodeKey = encodeURIComponent(key);
+            if (encodeKey.length == 0) {
                 continue;
             }
-            queryComponents[parameter[0]] = parameter[1];
+            deep(data,key,parameter[1]);
         }
     }
-    return queryComponents;
+    return data;
+}
+
+function deep(data,key,value){
+    if(key.indexOf('[')!= -1){
+        //数组
+        processList(data,key,value);
+    }else if(key.indexOf('.')!= -1){
+        //对象
+        processMap(data,key,value);
+    }
+    data[key] = value;
+}
+
+
+
+function processMap(data,key,value){
+    var splits = key.split('.',2);
+    var key1 = splits[0];
+    var key2 = splits[1];
+    var data1 = data[key1];
+    if(isNull(data1)){
+        data1 = {};
+    }
+    deep(data1,key2,value);
+    data[key1] = data1;
+}
+
+function processList(data,key,value){
+    var splits = key.split('[',2);
+    var key1 = splits[0];
+    var splits2 = splits[1].split(']');
+    var idx = splits2[0];
+    var key2 = splits2[1];
+    var array = data[key1];
+    var data1;
+    if(isNull(array)){
+        array = [];
+    }else{
+        data1 = array[idx];
+    }
+    if(isNull(data1)){
+        data1 = {};
+    }
+    deep(data1,key2,value);
+    array[idx] = data1;
+    data[key1] = array;
+
 }

@@ -21,7 +21,7 @@ public class EnumsInfo extends BaseDO implements Serializable {
     */
 	private String enumType;
    /**
-    * 枚举KEEY
+    * 枚举KEY
     */
 	private String enumKey;
    /**

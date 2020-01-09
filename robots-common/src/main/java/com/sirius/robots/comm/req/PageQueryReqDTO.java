@@ -1,6 +1,5 @@
 package com.sirius.robots.comm.req;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sirius.robots.comm.bo.PageDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -24,4 +23,13 @@ public class PageQueryReqDTO implements Serializable {
 
     @ApiModelProperty("分页数据")
     private PageDTO pageDTO;
+    /**
+     * 结果时间
+     */
+    private String beginDate;
+    /**
+     * 结果时间
+     */
+    private String endDate;
+
 }

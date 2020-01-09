@@ -1,12 +1,20 @@
 package com.sirius.robots.manager;
 
+import com.github.pagehelper.PageHelper;
+import com.sirius.robots.comm.bo.PageDTO;
+import com.sirius.robots.comm.req.PageQueryReqDTO;
 import com.sirius.robots.dal.mapper.EnumsInfoMapper;
 import com.sirius.robots.dal.model.EnumsInfo;
+import com.sirius.robots.manager.util.CountEditUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 枚举信息管理
@@ -66,6 +74,19 @@ public class EnumsManager {
         return enumsInfoMapper.selectBySelective(query);
     }
 
+
+    /**
+     * 分页查询
+     * @param query 查询条件
+     * @return      查询结果
+     */
+    public PageDTO<EnumsInfo> selectByPage(EnumsInfo query , PageQueryReqDTO pageQueryDTO){
+        PageDTO pageDTO = pageQueryDTO.getPageDTO();
+        pageDTO.checkPage();
+        PageHelper.startPage(pageDTO.getPage(), pageDTO.getPageSize());
+        List<EnumsInfo> data = enumsInfoMapper.selectBySelective(query);
+        return new PageDTO<>(data);
+    }
     /**
      * 主键查询
      * @param id    主键
@@ -73,6 +94,16 @@ public class EnumsManager {
      */
     public EnumsInfo selectByPrimaryKey(Long id){
         return enumsInfoMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 修改
+     *
+     * @param map   编辑对象
+     */
+    @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void editConfig(Map<String, List<EnumsInfo>> map){
+        CountEditUtil.editConfig(enumsInfoMapper,map);
     }
 
 }

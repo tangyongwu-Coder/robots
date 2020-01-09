@@ -1,0 +1,42 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{comm/backLayout}">
+<div layout:fragment="head">
+    <!--dynamic table-->
+    <link th:href="@{/js/advanced-datatable/css/demo_page.css}" rel="stylesheet" />
+    <link th:href="@{/js/advanced-datatable/css/demo_table.css}" rel="stylesheet" />
+    <link th:href="@{/js/data-tables/DT_bootstrap.css}" rel="stylesheet" />
+    <!--pickers css-->
+    <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-timepicker/css/timepicker.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-datepicker/css/datepicker-custom.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-daterangepicker/daterangepicker-bs3.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-datetimepicker/css/datetimepicker-custom.css}" />
+    <!--ios7-->
+    <link rel="stylesheet" type="text/css" th:href="@{/js/ios-switch/switchery.css}" />
+</div>
+<body>
+<!--body wrapper start-->
+<div class="wrapper" layout:fragment="wrapper">
+    Body contents goes here
+</div>
+<!--body wrapper end-->
+<div layout:fragment="javascript">
+    <!--dynamic table-->
+    <script type="text/javascript" language="javascript" th:src="@{/js/advanced-datatable/js/jquery.dataTables.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-timepicker/js/bootstrap-timepicker.js}"></script>
+    <script type="text/javascript" th:src="@{/js/data-tables/DT_bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/js/page.js}"></script>
+    <!--ios7-->
+    <script th:src="@{/js/ios-switch/switchery.js}" ></script>
+    <script th:src="@{/js/ios-switch/ios-init.js}" ></script>
+
+    <div layout:fragment="javascript2">
+
+    </div>
+</div>
+
+</body>
+</html>
