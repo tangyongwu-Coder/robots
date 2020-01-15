@@ -1,8 +1,13 @@
 package com.sirius.robots.comm.util;
+import com.sirius.robots.comm.bo.PageDTO;
 
 import com.google.common.collect.Lists;
+import com.sirius.robots.comm.req.PageQueryReqDTO;
 import org.dozer.DozerBeanMapper;
+import org.dozer.loader.api.BeanMappingBuilder;
+import org.dozer.loader.api.TypeMappingOptions;
 
+import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,6 +28,11 @@ public class BeanMapperUtil {
      * 持有Dozer单例
      */
     private static DozerBeanMapper dozerBeanMapper = new DozerBeanMapper();
+
+    /**
+     * 持有Dozer单例
+     */
+    private static DozerBeanMapper dozerBean2Mapper = new DozerBeanMapper();
 
     /**
      * 基于Dozer转换对象的类型
@@ -67,4 +77,18 @@ public class BeanMapperUtil {
             dozerBeanMapper.map(source, toObj);
         }
     }
+
+    public static void copyNoNull(Object source, Object toObj){
+        if (null != source) {
+            dozerBean2Mapper.addMapping(new BeanMappingBuilder() {
+                @Override
+                protected void configure() {
+                    mapping(source.getClass(), toObj.getClass(),
+                            TypeMappingOptions.mapNull(false), TypeMappingOptions.mapEmptyString(false));
+                }
+            });
+            dozerBean2Mapper.map(source, toObj);
+        }
+    }
+
 }

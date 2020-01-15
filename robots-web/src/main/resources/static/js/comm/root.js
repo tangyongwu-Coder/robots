@@ -107,11 +107,6 @@ var DataUtil = {
     }
 }
 
-function formatDate(date, fmt)
-{
-}
-
-
 var Query = {
     get : function(option) {
         $.ajax({
@@ -141,7 +136,7 @@ var Query = {
             contentType:"application/json",
             processData: false,
             success: option.success,
-            error: errorCallBack
+            error: this.errorCallBack
         });
     },
 
@@ -169,39 +164,57 @@ var Query = {
                     }
                 }
             },
-            error: errorCallBack
+            error: this.errorCallBack
         });
+    },
+
+    errorCallBack :function (data){
+    SweetAlert.error('',"系统繁忙,请稍后再试");
     }
 };
 
-
-function isNull(data) {
+var Objects ={
+    isNull :function(data) {
     return  typeof data == typeof undefined || data ==null|| data =='';
-}
+    },
 
-function nonNull(data) {
-    return !isNull(data);
-}
+    nonNull : function(data) {
+    return !this.isNull(data);
+    },
 
-function errorCallBack(data){
-    SweetAlert.error('',"系统繁忙,请稍后再试");
-}
-
-function getChildNodesByClass(ele,className){
-    var childs = ele.childNodes;
-    var result = [];
-    for(var i in childs){
-        var child = childs[i];
-        var cName = child.className;
-        if(isNull(cName)){
-            continue;
-        }
-        if(cName.search(className) != -1){
-            result.push(child);
-        }
+    deepCopy :function(obj){
+    if(typeof obj != 'object'){
+        return obj;
     }
-    return result;
+    var newObj = {};
+    for ( var attr in obj) {
+        newObj[attr] = this.deepCopy(obj[attr]);
+    }
+    return newObj;
+    }
 }
+
+
+
+
+var NodeUtil = {
+    getChildNodesByClass :function(ele,className){
+        var childs = ele.childNodes;
+        var result = [];
+        for(var i in childs){
+            var child = childs[i];
+            var cName = child.className;
+            if(Objects.isNull(cName)){
+                continue;
+            }
+            if(cName.search(className) != -1){
+                result.push(child);
+            }
+        }
+        return result;
+    }
+}
+
 
 
 

@@ -30,4 +30,6 @@ public class RobotsServiceException extends RuntimeException {
         this.code = errorCodeEnum.getCode();
         this.resMessage = errorCodeEnum.getMsg();
     }
+
+
 }

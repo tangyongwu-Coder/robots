@@ -80,13 +80,14 @@ var dataType = {
     DATA_DAY:'DATA_DAY',
     DATA_TIME:'DATA_TIME',
     STATUS:'STATUS',
-    ENUM:'ENUM',
+    ENUM_URL:'ENUM_URL',
+    ENUM_RESOURCE:'ENUM_RESOURCE',
 }
 
 function initTable(option){
      var tableConfig = {
         "sAjaxSource" : option.url,
-        "sAjaxDataProp": isNull(option.result) ? 'result' : option.result,
+        "sAjaxDataProp": Objects.isNull(option.result) ? 'result' : option.result,
         //服务器端，数据回调处理
         "fnServerData" : function(sSource, aoData, fnCallback) {
             Query.post({
@@ -137,9 +138,18 @@ function initColumn(column) {
     columnConfig.mDataProp = name;
     columnConfig.sDefaultContent = "";
     switch (type){
-        case dataType.ENUM:
+        case dataType.ENUM_URL:
             var enumUrl = column.enumUrl;
             var enumData = getUrlData(enumUrl);
+            var enumCode = getEnumCode(column.enumCode);
+            var enumMsg = getEnumMsg(column.enumMsg);
+            columnConfig.mRender = function (data, type, full) {
+                return getDescByCode(enumData, data, enumCode, enumMsg);
+            };
+            break;
+        case dataType.ENUM_RESOURCE:
+            var enumResource = column.enumResource;
+            var enumData = getResourceData(enumResource);
             var enumCode = getEnumCode(column.enumCode);
             var enumMsg = getEnumMsg(column.enumMsg);
             columnConfig.mRender = function (data, type, full) {
@@ -157,6 +167,7 @@ function initColumn(column) {
             };
             break;
         case dataType.STATUS:
+
             columnConfig.fnCreatedCell = function (nTd, sData, oData, iRow, iCol) {
                 nTd.innerHTML = '';
                 var input = document.createElement('input');
@@ -165,10 +176,12 @@ function initColumn(column) {
                 input.className = 'js-switch';
                 nTd.appendChild(input);
                 var checked = sData == 'NORMAL';
-                new Switchery(input,{
+                var chery = new Switchery(input,{
                     checked: checked
                 });
-                input.addEventListener('click', statusChange());
+                chery.switcher.addEventListener('click', function(event) {
+                    statusChange(chery,column,oData);
+                });
             };
             break;
         default:
@@ -177,15 +190,34 @@ function initColumn(column) {
     return columnConfig;
 }
 
-function statusChange(){
-    var input =  $(this);
-    var url = input.attr("data-id");
+function statusChange(chery,column,oData){
+    var changeUrl = column.changeUrl;
+    if(Objects.isNull(changeUrl)){
+      return;
+    }
+    if(chery.isChecked()){
 
-
+    }
+    var data = Objects.deepCopy(oData);
+    data[column.name] = chery.isChecked()
+    Query.post({
+        url: changeUrl,
+        data: {
+            id:oData.id,
+        },
+        success: function (data) {
+            if (data.success) {
+                var result = pageResult(data.data);
+                fnCallback(result);
+            } else {
+                alert("Fail to get data!")
+            }
+        }
+    })
 }
 
 function getDescByCode(enumData,code,enumCode,enumMsg){
-    if(isNull(enumData)){
+    if(Objects.isNull(enumData)){
         return null;
     }
     for(var i in enumData){
@@ -198,7 +230,7 @@ function getDescByCode(enumData,code,enumCode,enumMsg){
 }
 
 function getType(type){
-    if(isNull(type)){
+    if(Objects.isNull(type)){
         return dataType.STRING;
     }
     return type;

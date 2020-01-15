@@ -116,7 +116,7 @@ function processMap(data,key,value){
     var key1 = splits[0];
     var key2 = splits[1];
     var data1 = data[key1];
-    if(isNull(data1)){
+    if(Objects.isNull(data1)){
         data1 = {};
     }
     deep(data1,key2,value);
@@ -131,12 +131,12 @@ function processList(data,key,value){
     var key2 = splits2[1];
     var array = data[key1];
     var data1;
-    if(isNull(array)){
+    if(Objects.isNull(array)){
         array = [];
     }else{
         data1 = array[idx];
     }
-    if(isNull(data1)){
+    if(Objects.isNull(data1)){
         data1 = {};
     }
     deep(data1,key2,value);

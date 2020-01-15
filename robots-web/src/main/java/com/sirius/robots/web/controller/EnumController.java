@@ -4,9 +4,9 @@ import com.sirius.robots.comm.bo.PageDTO;
 import com.sirius.robots.comm.res.Result;
 import com.sirius.robots.comm.util.LogUtil;
 import com.sirius.robots.comm.util.VerifyParamUtil;
-import com.sirius.robots.dal.model.EnumTypeInfo;
 import com.sirius.robots.dal.model.EnumsInfo;
 import com.sirius.robots.service.EnumsService;
+import com.sirius.robots.service.model.req.EnumsOneReqDTO;
 import com.sirius.robots.service.model.req.EnumsQueryReqDTO;
 import com.sirius.robots.service.model.req.EnumsReqDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -29,19 +29,17 @@ import java.util.*;
 @RequestMapping(value ="/enums",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class EnumController {
 
-
-
     @Autowired
     private EnumsService enumsService;
 
     @ResponseBody
     @RequestMapping(value ="/type", method = RequestMethod.POST)
-    public Result<List<EnumTypeInfo>> type(){
+    public Result<List<EnumsInfo>> type(@RequestBody EnumsQueryReqDTO reqDTO){
         LogUtil.updateLogId(null);
-        log.info("获取枚举类型-开始");
+        log.info("获取枚举-开始,请求参数:{}",reqDTO);
         long start = System.currentTimeMillis();
-        List<EnumTypeInfo> list = enumsService.queryAllType();
-        log.info("获取枚举类型-成功-耗时:{}ms,",System.currentTimeMillis()-start);
+        List<EnumsInfo> list = enumsService.queryEnum(reqDTO);
+        log.info("获取枚举-成功-耗时:{}ms,",System.currentTimeMillis()-start);
         return Result.ok(list);
 
     }
@@ -49,10 +47,10 @@ public class EnumController {
     @RequestMapping(value ="/page", method = RequestMethod.POST)
     public Result<PageDTO<EnumsInfo>> page(@RequestBody EnumsQueryReqDTO reqDTO){
         LogUtil.updateLogId(null);
-        log.info("获取枚举,请求参数:{}",reqDTO);
+        log.info("获取枚举分页-开始,请求参数:{}",reqDTO);
         long start = System.currentTimeMillis();
         PageDTO<EnumsInfo> data = enumsService.queryPage(reqDTO);
-        log.info("获取枚举-成功-耗时:{}ms,",System.currentTimeMillis()-start);
+        log.info("获取枚举分页-成功-耗时:{}ms,",System.currentTimeMillis()-start);
         return Result.ok(data);
     }
 
@@ -60,11 +58,23 @@ public class EnumController {
     @RequestMapping(value ="/edit", method = RequestMethod.POST)
     public Result<String> edit(@RequestBody EnumsReqDTO reqDTO){
         LogUtil.updateLogId(null);
-        log.info("枚举新增/修改,请求参数:{}",reqDTO);
+        log.info("枚举新增/修改-开始,请求参数:{}",reqDTO);
         VerifyParamUtil.validateObject(reqDTO);
         enumsService.edit(reqDTO);
         long start = System.currentTimeMillis();
         log.info("枚举新增/修改-成功-耗时:{}ms,",System.currentTimeMillis()-start);
+        return Result.ok("成功");
+    }
+
+    @ResponseBody
+    @RequestMapping(value ="/editOne", method = RequestMethod.POST)
+    public Result<String> editOne(@RequestBody EnumsOneReqDTO reqDTO){
+        LogUtil.updateLogId(null);
+        log.info("枚举修改-开始,请求参数:{}",reqDTO);
+        VerifyParamUtil.validateObject(reqDTO);
+        enumsService.editOne(reqDTO);
+        long start = System.currentTimeMillis();
+        log.info("枚举修改-成功-耗时:{}ms,",System.currentTimeMillis()-start);
         return Result.ok("成功");
     }
 }

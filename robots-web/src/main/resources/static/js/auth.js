@@ -71,7 +71,7 @@ function forgotValidate(fromId){
 	var errorLabel = Auth.vars.forgot_error;
 
 	var email = formData.email;
-	if(isNull(email)){
+	if(Objects.isNull(email)){
 		showErrorMsg(errorLabel,"邮箱不能为空");
 		return false;
 	}
@@ -80,7 +80,7 @@ function forgotValidate(fromId){
 		return false;
 	}
 	var passWord = formData.passWord;
-	if(isNull(passWord)){
+	if(Objects.isNull(passWord)){
 		showErrorMsg(errorLabel,"请输入邮箱验证码");
 		return false;
 	}
@@ -109,7 +109,7 @@ function registerValidate(fromId){
 	var formData = fromDataArr(fromId);
 	var loginName = formData.loginName;
 	var errorLabel = Auth.vars.register_error;
-	if(isNull(loginName)){
+	if(Objects.isNull(loginName)){
 		showErrorMsg(errorLabel,"用户名不能为空");
 		return false;
 	}
@@ -119,7 +119,7 @@ function registerValidate(fromId){
 	}
 
 	var email = formData.email;
-	if(isNull(email)){
+	if(Objects.isNull(email)){
 		showErrorMsg(errorLabel,"邮箱不能为空");
 		return false;
 	}
@@ -129,7 +129,7 @@ function registerValidate(fromId){
 	}
 
 	var passWord = formData.passWord;
-	if(isNull(passWord)){
+	if(Objects.isNull(passWord)){
 		showErrorMsg(errorLabel,"密码不能为空");
 		return false;
 	}
@@ -139,7 +139,7 @@ function registerValidate(fromId){
 	}
 
 	var passWord2 = formData.passWord2;
-	if(isNull(passWord2)){
+	if(Objects.isNull(passWord2)){
 		showErrorMsg(errorLabel,"确认密码密码不能为空");
 		return false;
 	}

@@ -133,7 +133,7 @@
 				AND UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
 				</if>
 		</where>
-		ORDER BY ID DESC
+		ORDER BY ENUM_TYPE,ID DESC
 	</select>
 
 </mapper>
