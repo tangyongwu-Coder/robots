@@ -1109,19 +1109,20 @@ var defaults = {
  */
 
 function Switchery(element, options) {
-  if (!(this instanceof Switchery)) return new Switchery(element, options);
+    if (!(this instanceof Switchery)) return new Switchery(element, options);
+	this.element = element;
+	if(element){
+		this.element.checked = options.checked;
+	}
+  	this.options = options || {};
 
-  this.element = element;
-	this.element.checked = options.checked;
-  this.options = options || {};
+	for (var i in defaults) {
+		if (this.options[i] == null) {
+		  this.options[i] = defaults[i];
+		}
+	}
 
-  for (var i in defaults) {
-    if (this.options[i] == null) {
-      this.options[i] = defaults[i];
-    }
-  }
-
-  if (this.element != null && this.element.type == 'checkbox') this.init();
+  	if (this.element != null && this.element.type == 'checkbox') this.init();
 }
 
 /**
@@ -1217,7 +1218,7 @@ Switchery.prototype.setPosition = function (clicked) {
 	} else{
 		jack.style.left = parseInt(switcher.currentStyle['width']) - jack.offsetWidth + 'px';
 	}
-	if(isNull(jack.style.left)){
+	if(Objects.isNull(jack.style.left)){
 		jack.style.left = '23px';
 	}
     if (this.options.color) this.colorize();
