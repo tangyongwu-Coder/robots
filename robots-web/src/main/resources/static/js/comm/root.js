@@ -35,9 +35,10 @@ $.validator.addMethod("idCardCheck",function(value,element) {
 $.validator.addMethod("emailCheck",function(value,element) {
     return this.optional(element) || ValidatePatten.EMAIL_REGEX.test(value);
 },"邮箱格式不正确");
-
+var now = new Date();
+var nowDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
 /**时间工具**/
-var DataUtil = {
+var DateUtil = {
     /**
      * 日期格式:yyyy-MM
      */
@@ -68,6 +69,8 @@ var DataUtil = {
      * 日期格式
      */
     dayPattern : "yyyy-MM-dd",
+
+
 
     /**
      * 将日期格式化成指定格式的字符串
@@ -104,7 +107,14 @@ var DataUtil = {
             });
         }
         return fmt;
-    }
+    },
+
+    addDate: function(date,days){
+        date = date == undefined ? new Date() : date;
+        var d=new Date(date);
+        d.setDate(d.getDate()+days);
+        return d;
+}
 }
 
 var Query = {

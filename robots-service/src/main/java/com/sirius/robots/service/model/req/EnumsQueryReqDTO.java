@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 public class EnumsQueryReqDTO extends PageQueryReqDTO implements Serializable {
 
 

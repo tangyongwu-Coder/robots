@@ -150,21 +150,21 @@ function initColumn(column) {
             break;
         case dataType.ENUM_RESOURCE:
             var enumResource = column.enumResource;
-            var enumData = getResourceData(enumResource);
-            var enumCode = getEnumCode(column.enumCode);
-            var enumMsg = getEnumMsg(column.enumMsg);
+             enumData = getResourceData(enumResource);
+             enumCode = getEnumCode(column.enumCode);
+             enumMsg = getEnumMsg(column.enumMsg);
             columnConfig.mRender = function (data, type, full) {
                 return getDescByCode(enumData, data, enumCode, enumMsg);
             };
             break;
         case dataType.DATA_DAY:
             columnConfig.mRender = function (data, type, full) {
-                return DataUtil.formatDate(data,DataUtil.dayPattern);
+                return DateUtil.formatDate(data,DateUtil.dayPattern);
             };
             break;
         case dataType.DATA_TIME:
             columnConfig.mRender = function (data, type, full) {
-                return DataUtil.formatDate(data,DataUtil.allPattern);
+                return DateUtil.formatDate(data,DateUtil.allPattern);
             };
             break;
         case dataType.STATUS:
@@ -186,23 +186,27 @@ function initColumn(column) {
         case dataType.OPERATE:
             columnConfig.fnCreatedCell = function (nTd, sData, oData, iRow, iCol) {
                 nTd.innerHTML = '';
-                var editBtn = document.createElement('input');
-                editBtn.setAttribute('type','button')
-                editBtn.setAttribute('data-toggle','modal');
-                editBtn.value = '修改';
-                editBtn.className = 'btn btn-primary';
-                nTd.appendChild(editBtn);
-                var deleteBtn = document.createElement('input');
-                deleteBtn.setAttribute('type','button');
-                deleteBtn.value = '删除';
-                deleteBtn.className = 'btn btn-primary';
-                nTd.appendChild(deleteBtn);
-                editBtn.addEventListener('click', function(event) {
-                    column.editFun(oData);
-                });
-                deleteBtn.addEventListener('click', function(event) {
-                    column.deleteFun(oData);
-                });
+                if(Objects.nonNull(column.editFun)){
+                    var editBtn = document.createElement('input');
+                    editBtn.setAttribute('type','button');
+                    editBtn.setAttribute('data-toggle','modal');
+                    editBtn.value = '修改';
+                    editBtn.className = 'btn btn-primary';
+                    nTd.appendChild(editBtn);
+                    editBtn.addEventListener('click', function(event) {
+                        column.editFun(oData);
+                    });
+                }
+                if(Objects.nonNull(column.deleteFun)) {
+                    var deleteBtn = document.createElement('input');
+                    deleteBtn.setAttribute('type','button');
+                    deleteBtn.value = '删除';
+                    deleteBtn.className = 'btn btn-primary';
+                    nTd.appendChild(deleteBtn);
+                    deleteBtn.addEventListener('click', function(event) {
+                        column.deleteFun(oData);
+                    });
+                }
             };
             break;
         default:
