@@ -55,6 +55,16 @@ public class EnumsManager {
     public void delete(EnumsInfo enumsInfo){
         enumsInfoMapper.delete(enumsInfo);
     }
+    /**
+     * 删除
+     *
+     * @param id  枚举信息Id
+     */
+    public void delete(Long id){
+        EnumsInfo enumsInfo = new EnumsInfo();
+        enumsInfo.setId(id);
+        enumsInfoMapper.delete(enumsInfo);
+    }
 
     /**
      * 批量新增

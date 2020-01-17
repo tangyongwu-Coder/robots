@@ -144,3 +144,47 @@ function processList(data,key,value){
     data[key1] = array;
 
 }
+
+
+/** 赋值 **/
+
+function setModalVal(modalId,data){
+    $("#"+modalId+" input").each(function(index, element) {
+        var mapping = $(this).attr("data-mapping");
+        if (typeof mapping === typeof undefined) {
+            return;
+        }
+        var name = element.name;
+        var value = data[name];
+        if(Objects.isNull(value)){
+            return;
+        }
+        switch (element.type.toLowerCase()) {
+            case 'hidden':
+            case 'password':
+            case 'email':
+            case 'text':
+                element.value = value;
+                break;
+            case 'checkbox':
+            case 'radio':
+                element.value = value;
+                break;
+            default :
+                break;
+        }
+    });
+    $("#"+modalId+" select").each(function(index, element) {
+        var select = $(this);
+        var mapping = select.attr("data-mapping");
+        if (typeof mapping === typeof undefined) {
+            return;
+        }
+        var name = element.name;
+        var value = data[name];
+        if(Objects.isNull(value)){
+            return;
+        }
+        select.val(value);
+    });
+}

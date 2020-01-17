@@ -47,7 +47,7 @@ function loginSub() {
 		fromId: 'loginFrom',
 		successUrl:'/index',
 		errorFun:function (data) {
-			SweetAlert.warning('',data.errorMsg);
+            GritterAlert.warning('',data.errorMsg);
 		}
 	});
 }

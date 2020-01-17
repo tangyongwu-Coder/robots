@@ -13,10 +13,11 @@ import com.sirius.robots.manager.EnumsManager;
 import com.sirius.robots.service.model.bo.EnumsBO;
 import com.sirius.robots.service.model.req.EnumsOneReqDTO;
 import com.sirius.robots.service.model.req.EnumsQueryReqDTO;
-import com.sirius.robots.service.model.req.EnumsReqDTO;
+import com.sirius.robots.service.model.req.EnumsBatchReqDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -70,12 +71,26 @@ public class EnumsService {
         BeanMapperUtil.copyNoNull(reqDTO,existOne);
         enumsManager.edit(existOne);
     }
+
+    /**
+     * 修改枚举
+     *
+     * @param ids    枚举请求对象
+     */
+    public void delete(List<Long> ids){
+        if(CollectionUtils.isEmpty(ids)){
+            return;
+        }
+        for (Long id : ids) {
+            enumsManager.delete(id);
+        }
+    }
     /**
      * 新增/修改枚举
      *
      * @param reqDTO    枚举请求对象
      */
-    public void edit(EnumsReqDTO reqDTO){
+    public void edit(EnumsBatchReqDTO reqDTO){
         String enumType = reqDTO.getEnumType();
         List<EnumsBO> enums = reqDTO.getEnums();
         List<EnumsInfo> records = BeanMapperUtil.mapList(enums, EnumsInfo.class);

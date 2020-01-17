@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 枚举请求对象
+ * 枚举批量操作请求对象
  *
  * @author 孟星魂
  * @version 5.0 createTime: 2020/1/7
@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class EnumsReqDTO implements Serializable {
+public class EnumsBatchReqDTO implements Serializable {
 
     private static final long serialVersionUID = 5461534864158117893L;
 
@@ -29,5 +29,7 @@ public class EnumsReqDTO implements Serializable {
      * 枚举列表
      */
     private List<EnumsBO> enums;
+
+    private List<Long> deleteIds;
 
 }

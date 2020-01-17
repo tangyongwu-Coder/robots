@@ -62,7 +62,7 @@ function pageQuery(aoData){
     pageDTO.page_size = pageSize;
     var query = fromDataArr(queryFromId);
     query.pageDTO = pageDTO;
-    return JSON.stringify(query);
+    return query;
 }
 
 function pageResult(data){
@@ -82,6 +82,7 @@ var dataType = {
     STATUS:'STATUS',
     ENUM_URL:'ENUM_URL',
     ENUM_RESOURCE:'ENUM_RESOURCE',
+    OPERATE:'OPERATE',
 }
 
 function initTable(option){
@@ -98,7 +99,7 @@ function initTable(option){
                         var result = pageResult(data.data);
                         fnCallback(result);
                     } else {
-                        alert("Fail to get data!")
+                        SweetAlert.warning('',data.errorMsg);
                     }
                 }
             })
@@ -167,12 +168,10 @@ function initColumn(column) {
             };
             break;
         case dataType.STATUS:
-
             columnConfig.fnCreatedCell = function (nTd, sData, oData, iRow, iCol) {
                 nTd.innerHTML = '';
                 var input = document.createElement('input');
                 input.setAttribute('type','checkbox');
-                input.setAttribute('data-id',oData.id);
                 input.className = 'js-switch';
                 nTd.appendChild(input);
                 var checked = sData == 'NORMAL';
@@ -184,6 +183,28 @@ function initColumn(column) {
                 });
             };
             break;
+        case dataType.OPERATE:
+            columnConfig.fnCreatedCell = function (nTd, sData, oData, iRow, iCol) {
+                nTd.innerHTML = '';
+                var editBtn = document.createElement('input');
+                editBtn.setAttribute('type','button')
+                editBtn.setAttribute('data-toggle','modal');
+                editBtn.value = '修改';
+                editBtn.className = 'btn btn-primary';
+                nTd.appendChild(editBtn);
+                var deleteBtn = document.createElement('input');
+                deleteBtn.setAttribute('type','button');
+                deleteBtn.value = '删除';
+                deleteBtn.className = 'btn btn-primary';
+                nTd.appendChild(deleteBtn);
+                editBtn.addEventListener('click', function(event) {
+                    column.editFun(oData);
+                });
+                deleteBtn.addEventListener('click', function(event) {
+                    column.deleteFun(oData);
+                });
+            };
+            break;
         default:
             break;
     }
@@ -191,26 +212,20 @@ function initColumn(column) {
 }
 
 function statusChange(chery,column,oData){
-    var changeUrl = column.changeUrl;
+    var changeUrl = column.url;
     if(Objects.isNull(changeUrl)){
       return;
     }
-    if(chery.isChecked()){
-
-    }
     var data = Objects.deepCopy(oData);
-    data[column.name] = chery.isChecked()
+    data[column.name] = chery.isChecked();
     Query.post({
         url: changeUrl,
-        data: {
-            id:oData.id,
-        },
+        data: data,
         success: function (data) {
             if (data.success) {
-                var result = pageResult(data.data);
-                fnCallback(result);
+                window.location.href = option.successUrl;
             } else {
-                alert("Fail to get data!")
+                SweetAlert.warning('',data.errorMsg);
             }
         }
     })

@@ -8,7 +8,7 @@ import com.sirius.robots.dal.model.EnumsInfo;
 import com.sirius.robots.service.EnumsService;
 import com.sirius.robots.service.model.req.EnumsOneReqDTO;
 import com.sirius.robots.service.model.req.EnumsQueryReqDTO;
-import com.sirius.robots.service.model.req.EnumsReqDTO;
+import com.sirius.robots.service.model.req.EnumsBatchReqDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -56,7 +56,7 @@ public class EnumController {
 
     @ResponseBody
     @RequestMapping(value ="/edit", method = RequestMethod.POST)
-    public Result<String> edit(@RequestBody EnumsReqDTO reqDTO){
+    public Result<String> edit(@RequestBody EnumsBatchReqDTO reqDTO){
         LogUtil.updateLogId(null);
         log.info("枚举新增/修改-开始,请求参数:{}",reqDTO);
         VerifyParamUtil.validateObject(reqDTO);
@@ -75,6 +75,18 @@ public class EnumController {
         enumsService.editOne(reqDTO);
         long start = System.currentTimeMillis();
         log.info("枚举修改-成功-耗时:{}ms,",System.currentTimeMillis()-start);
+        return Result.ok("成功");
+    }
+
+    @ResponseBody
+    @RequestMapping(value ="/delete", method = RequestMethod.POST)
+    public Result<String> delete(@RequestBody EnumsBatchReqDTO reqDTO){
+        LogUtil.updateLogId(null);
+        log.info("枚举删除-开始,请求参数:{}",reqDTO);
+        VerifyParamUtil.validateObject(reqDTO);
+        enumsService.delete(reqDTO.getDeleteIds());
+        long start = System.currentTimeMillis();
+        log.info("枚举删除-成功-耗时:{}ms,",System.currentTimeMillis()-start);
         return Result.ok("成功");
     }
 }

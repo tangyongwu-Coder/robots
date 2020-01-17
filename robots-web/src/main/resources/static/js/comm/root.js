@@ -119,8 +119,12 @@ var Query = {
             cache: false,
             contentType: "application/json",
             processData: false,
-            success: option.success,
-            error: errorCallBack
+            success: function(data) {
+                option.success(data);
+            },
+            error:function(data) {
+                this.errorCallBack(data);
+            }
         });
     },
 
@@ -130,13 +134,17 @@ var Query = {
             url: option.url,
             type: 'POST',
             dataType: "json",//预期服务器返回的数据类型
-            data: option.data,
+            data: JSON.stringify(option.data),
             async: false,
             cache: false,
             contentType:"application/json",
             processData: false,
-            success: option.success,
-            error: this.errorCallBack
+            success: function(data) {
+                option.success(data);
+            },
+            error:function(data) {
+                this.errorCallBack(data);
+            }
         });
     },
 
@@ -164,12 +172,14 @@ var Query = {
                     }
                 }
             },
-            error: this.errorCallBack
+            error:function(data) {
+                this.errorCallBack(data);
+            }
         });
     },
 
     errorCallBack :function (data){
-    SweetAlert.error('',"系统繁忙,请稍后再试");
+        SweetAlert.errorFun('',"系统繁忙,请稍后再试");
     }
 };
 

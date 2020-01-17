@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sirius.robots.dal.mapper.UserInfoMapper">
+<mapper namespace="com.sirius.robots.dal.mapper.UserInfoMapper">
+
 	<resultMap id="BaseResultMap" type="com.sirius.robots.dal.model.UserInfo">
 		<result column="ID"		 jdbcType="INTEGER"		 property="id"/>
 		<result column="LOGIN_NAME"		 jdbcType="VARCHAR"		 property="loginName"/>
@@ -23,7 +24,7 @@
 		 UPDATED_AT, UPDATED_BY
 	</sql>
 
-	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
 		SELECT
 		<include refid="Base_Column_List" />
 		FROM T_USER_INFO

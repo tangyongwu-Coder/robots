@@ -332,7 +332,7 @@ public class CreateTable {
 		// === select by primary key ===
 		String _v_pkColName = _m_toAttributeString(_m_getPrimaryKeyColumn(_v_fields));
 		if (_v_pkColName != null) {
-			_v_content = "\t<select id=\"selectByPrimaryKey\" parameterType=\"java.lang.Integer\" resultMap=\"BaseResultMap\">" +
+			_v_content = "\t<select id=\"selectByPrimaryKey\" parameterType=\"java.lang.Long\" resultMap=\"BaseResultMap\">" +
 					"\r\n\t\tSELECT" +
 					"\r\n\t\t<include refid=\"Base_Column_List\" />" +
 					"\r\n\t\tFROM "+_v_tblName+"" +

@@ -11,7 +11,7 @@
                 <header class="panel-heading">
                     枚举信息
                     <span class="pull-right">
-                    <a class="btn btn-default" data-toggle="modal" href="#editModal">新增</a>
+                    <a class="btn btn-default" data-toggle="modal" href="#addModal">新增</a>
              </span>
                 </header>
                 <div class="panel-body">
@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label">状态:</label>
                             <div class="col-md-2">
-                                <select class="form-control m-bot15" name="enumStatus"
+                                <select class="form-control m-bot15" name="enumStatus" data-mode="query"
                                         data-resource="StatusEnum">
                                 </select>
                             </div>
@@ -55,6 +55,7 @@
                                 <th class="center">枚举值</th>
                                 <th class="center">状态</th>
                                 <th class="center">时间</th>
+                                <th class="center">操作</th>
                             </tr>
                             </thead>
                             <tfoot>
@@ -65,6 +66,7 @@
                                 <th class="center">枚举值</th>
                                 <th class="center">状态</th>
                                 <th class="center">时间</th>
+                                <th class="center">操作</th>
                             </tr>
                             </tfoot>
                         </table>
@@ -72,12 +74,12 @@
                 </div>
 
                 <!-- Modal -->
-                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog" style="width: 900px">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="modalTitle">新增枚举</h4>
+                                <h4 class="modal-title">新增枚举</h4>
                             </div>
                             <div class="modal-body">
                                 <form onsubmit="return false" action="##" method="post" class="form-horizontal" id="addFrom">
@@ -118,6 +120,57 @@
                     </div>
                 </div>
                 <!-- modal -->
+
+                <!-- Modal -->
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="width: 900px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">修改枚举</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form onsubmit="return false" action="##" method="post" class="form-horizontal" id="editFrom">
+                                    <input type="hidden" class="form-control" data-mapping="id" name="id">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-1 modal-label">枚举类型:</label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" data-mapping="enumType" name="enumType" placeholder="枚举类型" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group group-list" >
+                                        <label class="col-md-1 control-label modal-label">枚举KEY:</label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" data-mapping="enumKey" name="enumKey" required placeholder="枚举KEY">
+                                        </div>
+                                        <label class="col-md-1 control-label modal-label">枚举值:</label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" data-mapping="enumValue" name="enumValue" required placeholder="枚举值">
+                                        </div>
+                                        <label class="col-md-1 control-label modal-label">枚举描述:</label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" data-mapping="enumDesc" name="enumDesc" required placeholder="枚举描述">
+                                        </div>
+                                    </div>
+                                    <div class="form-group group-list" >
+                                        <label class="col-md-1 control-label modal-label">状态&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
+                                        <div class="col-md-2">
+                                            <select class="form-control m-bot15" data-mapping="enumType" name="enumStatus"
+                                                    data-resource="StatusEnum">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-info" type="submit" onclick="editSub()">确定</button>
+                                <button data-dismiss="modal" class="btn btn-primary" type="button">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal -->
             </section>
         </div>
     </div>
@@ -148,13 +201,60 @@
                     {
                         name:'enumStatus',
                         type:dataType.STATUS,
-                        changeUrl:'/enum/editOne'
-                    }, {
+                        url:'/enum/editOne'
+                    },
+                    {
                         name:'createdAt',
                         type:dataType.DATA_TIME,
+                    },
+                    {
+                        name:'operate',
+                        type:dataType.OPERATE,
+                        editFun:editFun,
+                        deleteFun:deleteFun
                     }],
             });
         } );
+
+        function editFun(data){
+            setModalVal('editModal',data);
+            $('#editModal').modal();
+        }
+
+        function editSub() {
+            Query.ajaxFrom({
+                url: '/enums/editOne',
+                fromId: 'editFrom',
+                successUrl:'/back/enums',
+                errorFun:function (data) {
+                    SweetAlert.warning('',data.errorMsg);
+                }
+            });
+        }
+
+        function deleteFun(oData){
+            SweetAlert.confirm({
+                title: '删除操作',
+                text: '是否确认删除？',
+                confirmFun: function () {
+                    Query.post({
+                        url: '/enums/delete',
+                        data: {
+                            deleteIds :[oData.id],
+                        },
+                        success:function (data) {
+                            if (data.success) {
+                                GritterAlert.info('','删除成功！');
+                                table.fnDraw();
+                            } else {
+                                GritterAlert.warning('',data.errorMsg);
+                            }
+
+                        }
+                    });
+                }
+            })
+        }
 
         function addOneEle() {
             var from = document.getElementById('addFrom');
