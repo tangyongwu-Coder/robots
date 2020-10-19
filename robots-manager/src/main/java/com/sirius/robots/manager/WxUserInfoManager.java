@@ -1,13 +1,10 @@
 package com.sirius.robots.manager;
 
 import com.sirius.robots.comm.constants.ServiceConstants;
-import com.sirius.robots.comm.enums.DeleteFlagEnum;
-import com.sirius.robots.comm.enums.MsgTypeEnum;
-import com.sirius.robots.comm.enums.StatusEnum;
+import com.sirius.robots.comm.enums.*;
 import com.sirius.robots.dal.mapper.WxUserInfoMapper;
 import com.sirius.robots.dal.mapper.WxUserRoleMapper;
 import com.sirius.robots.dal.model.WxUserInfo;
-import com.sirius.robots.comm.enums.UserTypeEnum;
 import com.sirius.robots.dal.model.WxUserRole;
 import com.sirius.robots.manager.util.WoolUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -70,12 +67,18 @@ public class WxUserInfoManager {
         return wxUserInfo;
     }
 
+    public void edit(WxUserInfo wxUserInfo){
+        wxUserInfo.setUpdatedBy(ServiceConstants.SYSTEM_NAME);
+        wxUserInfoMapper.updateByPrimaryKeySelective(wxUserInfo);
+    }
+
 
     private WxUserInfo add(String fromUser,String userName){
         WxUserInfo wxUserInfo = new WxUserInfo();
         wxUserInfo.setUserCode(fromUser);
         wxUserInfo.setUserName(userName);
         wxUserInfo.setUserType(UserTypeEnum.USER.getCode());
+        wxUserInfo.setIsFollow(FlagEnum.TRUE.getCodeStr());
         wxUserInfo.setUserStatus(StatusEnum.NORMAL.getCode());
         wxUserInfo.setDeleteFlag(DeleteFlagEnum.NORMAL.getCode());
         wxUserInfo.setCreatedBy(ServiceConstants.SYSTEM_NAME);

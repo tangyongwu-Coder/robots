@@ -11,7 +11,7 @@ import java.util.Date;
  * WxUserInfo实体类
  * 
  * @author 孟星魂
- * @version 5.0 createTime: 2020-10-15
+ * @version 5.0 createTime: 2020-10-19
   */
 @Data
 public class WxUserInfo implements Serializable {
@@ -41,6 +41,10 @@ public class WxUserInfo implements Serializable {
     * 电子邮件
     */
 	private String email;
+   /**
+    * 是否关注
+    */
+	private String isFollow;
    /**
     * NORMAL 正常 DISABLE 禁用
     */

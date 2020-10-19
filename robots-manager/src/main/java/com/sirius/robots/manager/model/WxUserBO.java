@@ -35,6 +35,11 @@ public class WxUserBO {
     private String email;
 
     /**
+     * 是否关注
+     */
+    private String isFollow;
+
+    /**
      *
      */
     private Integer roleId;

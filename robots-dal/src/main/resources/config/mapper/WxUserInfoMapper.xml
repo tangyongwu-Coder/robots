@@ -8,6 +8,7 @@
 		<result column="USER_TYPE"		 jdbcType="VARCHAR"		 property="userType"/>
 		<result column="MOBILE"		 jdbcType="VARCHAR"		 property="mobile"/>
 		<result column="EMAIL"		 jdbcType="VARCHAR"		 property="email"/>
+		<result column="IS_FOLLOW"		 jdbcType="VARCHAR"		 property="isFollow"/>
 		<result column="USER_STATUS"		 jdbcType="VARCHAR"		 property="userStatus"/>
 		<result column="DELETE_FLAG"		 jdbcType="TINYINT"		 property="deleteFlag"/>
 		<result column="CREATED_AT"		 jdbcType="TIMESTAMP"		 property="createdAt"/>
@@ -18,8 +19,8 @@
 
 	<sql id="Base_Column_List">
 		 ID, USER_CODE, USER_NAME, USER_TYPE, MOBILE, EMAIL,
-		 USER_STATUS, DELETE_FLAG, CREATED_AT, CREATED_BY, UPDATED_AT,
-		 UPDATED_BY
+		 IS_FOLLOW, USER_STATUS, DELETE_FLAG, CREATED_AT, CREATED_BY,
+		 UPDATED_AT, UPDATED_BY
 	</sql>
 
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -32,10 +33,12 @@
 				keyProperty="id">
 		INSERT INTO T_WX_USER_INFO(
 		 USER_CODE, USER_NAME, USER_TYPE, MOBILE, EMAIL,
-		 USER_STATUS, DELETE_FLAG, CREATED_AT, CREATED_BY
+		 IS_FOLLOW, USER_STATUS, DELETE_FLAG, CREATED_AT, CREATED_BY
+		
 		 )VALUES( 
 			#{userCode,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{userType,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},
-		#{userStatus,jdbcType=VARCHAR},#{deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{createdBy,jdbcType=VARCHAR}
+		#{isFollow,jdbcType=VARCHAR},#{userStatus,jdbcType=VARCHAR},#{deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{createdBy,jdbcType=VARCHAR}
+		
 		)
 	</insert>
 
@@ -43,12 +46,14 @@
 >
 		INSERT INTO T_WX_USER_INFO(
 		 USER_CODE, USER_NAME, USER_TYPE, MOBILE, EMAIL,
-		 USER_STATUS, DELETE_FLAG, CREATED_AT, CREATED_BY
+		 IS_FOLLOW, USER_STATUS, DELETE_FLAG, CREATED_AT, CREATED_BY
+		
 		 )VALUES
 		<foreach collection="list" index="index" item="item" separator=",">
 		(
 		#{item.userCode,jdbcType=VARCHAR},#{item.userName,jdbcType=VARCHAR},#{item.userType,jdbcType=VARCHAR},#{item.mobile,jdbcType=VARCHAR},#{item.email,jdbcType=VARCHAR},
-		#{item.userStatus,jdbcType=VARCHAR},#{item.deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{item.createdBy,jdbcType=VARCHAR}
+		#{item.isFollow,jdbcType=VARCHAR},#{item.userStatus,jdbcType=VARCHAR},#{item.deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{item.createdBy,jdbcType=VARCHAR}
+		
 		)
 		</foreach>
 	</insert>
@@ -70,6 +75,9 @@
 			</if>
 			<if test="email != null">
 		        EMAIL = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="isFollow != null">
+		        IS_FOLLOW = #{isFollow,jdbcType=VARCHAR},
 			</if>
 			<if test="userStatus != null">
 		        USER_STATUS = #{userStatus,jdbcType=VARCHAR},
@@ -119,6 +127,9 @@
 				</if>
 				<if test="email != null and email != ''">
 				AND EMAIL = #{email,jdbcType=VARCHAR}
+				</if>
+				<if test="isFollow != null and isFollow != ''">
+				AND IS_FOLLOW = #{isFollow,jdbcType=VARCHAR}
 				</if>
 				<if test="userStatus != null and userStatus != ''">
 				AND USER_STATUS = #{userStatus,jdbcType=VARCHAR}

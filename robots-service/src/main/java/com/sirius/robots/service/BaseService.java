@@ -1,6 +1,7 @@
 package com.sirius.robots.service;
 
 import com.sirius.robots.comm.bo.WxUserRoleBO;
+import com.sirius.robots.comm.enums.FlagEnum;
 import com.sirius.robots.comm.enums.MsgErrorEnum;
 import com.sirius.robots.comm.enums.RoleTypeEnum;
 import com.sirius.robots.comm.exception.RobotsServiceException;
@@ -27,6 +28,18 @@ public class BaseService {
 
     @Autowired
     protected WxRoleManager wxRoleManager;
+
+    protected void subscribe(String fromUser){
+        WxUserInfo wxUser = wxUserInfoManager.getWxUser(fromUser);
+        wxUser.setIsFollow(FlagEnum.TRUE.getCodeStr());
+        wxUserInfoManager.getWxUser(fromUser);
+    }
+    protected void unSubscribe(String fromUser){
+        WxUserInfo wxUser = wxUserInfoManager.getWxUser(fromUser);
+        wxUser.setIsFollow(FlagEnum.FALSE.getCodeStr());
+        wxUserInfoManager.edit(wxUser);
+
+    }
 
     /**
      * 获取用户信息
@@ -55,6 +68,7 @@ public class BaseService {
         wxUserBO.setUserType(wxUser.getUserType());
         wxUserBO.setMobile(wxUser.getMobile());
         wxUserBO.setEmail(wxUser.getEmail());
+        wxUserBO.setIsFollow(wxUser.getIsFollow());
         wxUserBO.setRoleId(wxUserRoleBO.getRoleId());
         wxUserBO.setRoleName(wxUserRoleBO.getRoleName());
         String roleType = wxUserRoleBO.getRoleType();
