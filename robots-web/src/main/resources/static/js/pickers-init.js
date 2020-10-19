@@ -35,7 +35,7 @@ function processRange(start,end,dateFormat){
     picker1.on('changeDate', function(ev) {
         if(Objects.isNull(picker2Date.date)||ev.date.valueOf() > picker2Date.date.valueOf()){
             var newDate = DateUtil.addDate(ev.date,1);
-            picker2Date.setValue(newDate);
+            picker2Date.setValue(DateUtil.formatDate(newDate,dateFormat));
         }
         picker1Date.hide();
         endEle[0].focus();

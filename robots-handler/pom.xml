@@ -15,7 +15,15 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>robots-dal</artifactId>
+            <artifactId>robots-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>robots-manager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sirius</groupId>
+            <artifactId>robots-manager</artifactId>
         </dependency>
 
     </dependencies>

@@ -78,26 +78,9 @@ public class WxMenuController {
         button33.setType(MenuButtonType.CLICK);
         button33.setName("赞一下我们");
         button33.setKey("V1001_GOOD");
-
-        WxMenuButton button34 = new WxMenuButton();
-        button34.setType(MenuButtonType.VIEW);
-        button34.setName("获取用户信息");
-
-        ServletRequestAttributes servletRequestAttributes =
-            (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (servletRequestAttributes != null) {
-            HttpServletRequest request = servletRequestAttributes.getRequest();
-            URL requestURL = new URL(request.getRequestURL().toString());
-            String url = this.wxService.switchoverTo(appid).oauth2buildAuthorizationUrl(
-                String.format("%s://%s/wx/redirect/%s/greet", requestURL.getProtocol(), requestURL.getHost(), appid),
-                WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
-            button34.setUrl(url);
-        }
-
         button3.getSubButtons().add(button31);
         button3.getSubButtons().add(button32);
         button3.getSubButtons().add(button33);
-        button3.getSubButtons().add(button34);
 
         this.wxService.switchover(appid);
         return this.wxService.getMenuService().menuCreate(menu);

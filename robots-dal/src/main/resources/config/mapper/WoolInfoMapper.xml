@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sirius.robots.dal.mapper.WoolInfoMapper">
+
+	<resultMap id="BaseResultMap" type="com.sirius.robots.dal.model.WoolInfo">
+		<result column="ID"		 jdbcType="INTEGER"		 property="id"/>
+		<result column="WOOL_TYPE"		 jdbcType="VARCHAR"		 property="woolType"/>
+		<result column="CHANNEL_TYPE"		 jdbcType="VARCHAR"		 property="channelType"/>
+		<result column="DATE_TYPE"		 jdbcType="VARCHAR"		 property="dateType"/>
+		<result column="WOOL_DATE"		 jdbcType="VARCHAR"		 property="woolDate"/>
+		<result column="NEXT_TIME"		 jdbcType="TIMESTAMP"		 property="nextTime"/>
+		<result column="WOOL_TITLE"		 jdbcType="VARCHAR"		 property="woolTitle"/>
+		<result column="WOOL_MSG"		 jdbcType="VARCHAR"		 property="woolMsg"/>
+		<result column="COUNT_USER_ID"		 jdbcType="INTEGER"		 property="countUserId"/>
+		<result column="WOOL_STATUS"		 jdbcType="VARCHAR"		 property="woolStatus"/>
+		<result column="DELETE_FLAG"		 jdbcType="TINYINT"		 property="deleteFlag"/>
+		<result column="CREATED_AT"		 jdbcType="TIMESTAMP"		 property="createdAt"/>
+		<result column="CREATED_BY"		 jdbcType="VARCHAR"		 property="createdBy"/>
+		<result column="UPDATED_AT"		 jdbcType="TIMESTAMP"		 property="updatedAt"/>
+		<result column="UPDATED_BY"		 jdbcType="VARCHAR"		 property="updatedBy"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		 ID, WOOL_TYPE, CHANNEL_TYPE, DATE_TYPE, WOOL_DATE, NEXT_TIME,
+		 WOOL_TITLE, WOOL_MSG, COUNT_USER_ID, WOOL_STATUS, DELETE_FLAG,
+		 CREATED_AT, CREATED_BY, UPDATED_AT, UPDATED_BY
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_WOOL_INFO
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</select>
+	<insert id="insert" parameterType="com.sirius.robots.dal.model.WoolInfo" useGeneratedKeys="true"
+				keyProperty="id">
+		INSERT INTO T_WOOL_INFO(
+		 WOOL_TYPE, CHANNEL_TYPE, DATE_TYPE, WOOL_DATE, NEXT_TIME,
+		 WOOL_TITLE, WOOL_MSG, COUNT_USER_ID, WOOL_STATUS, DELETE_FLAG,
+		 CREATED_AT, CREATED_BY
+		 )VALUES( 
+			#{woolType,jdbcType=VARCHAR},#{channelType,jdbcType=VARCHAR},#{dateType,jdbcType=VARCHAR},#{woolDate,jdbcType=VARCHAR},#{nextTime,jdbcType=TIMESTAMP},
+		#{woolTitle,jdbcType=VARCHAR},#{woolMsg,jdbcType=VARCHAR},#{countUserId,jdbcType=INTEGER},#{woolStatus,jdbcType=VARCHAR},#{deleteFlag,jdbcType=TINYINT},
+		CURRENT_TIMESTAMP,#{createdBy,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true"
+>
+		INSERT INTO T_WOOL_INFO(
+		 WOOL_TYPE, CHANNEL_TYPE, DATE_TYPE, WOOL_DATE, NEXT_TIME,
+		 WOOL_TITLE, WOOL_MSG, COUNT_USER_ID, WOOL_STATUS, DELETE_FLAG,
+		 CREATED_AT, CREATED_BY
+		 )VALUES
+		<foreach collection="list" index="index" item="item" separator=",">
+		(
+		#{item.woolType,jdbcType=VARCHAR},#{item.channelType,jdbcType=VARCHAR},#{item.dateType,jdbcType=VARCHAR},#{item.woolDate,jdbcType=VARCHAR},#{item.nextTime,jdbcType=TIMESTAMP},
+		#{item.woolTitle,jdbcType=VARCHAR},#{item.woolMsg,jdbcType=VARCHAR},#{item.countUserId,jdbcType=INTEGER},#{item.woolStatus,jdbcType=VARCHAR},#{item.deleteFlag,jdbcType=TINYINT},
+		CURRENT_TIMESTAMP,#{item.createdBy,jdbcType=VARCHAR}
+		)
+		</foreach>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.sirius.robots.dal.model.WoolInfo">
+		UPDATE T_WOOL_INFO
+		<set>
+			<if test="woolType != null">
+		        WOOL_TYPE = #{woolType,jdbcType=VARCHAR},
+			</if>
+			<if test="channelType != null">
+		        CHANNEL_TYPE = #{channelType,jdbcType=VARCHAR},
+			</if>
+			<if test="dateType != null">
+		        DATE_TYPE = #{dateType,jdbcType=VARCHAR},
+			</if>
+			<if test="woolDate != null">
+		        WOOL_DATE = #{woolDate,jdbcType=VARCHAR},
+			</if>
+			<if test="nextTime != null">
+		        NEXT_TIME = #{nextTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="woolTitle != null">
+		        WOOL_TITLE = #{woolTitle,jdbcType=VARCHAR},
+			</if>
+			<if test="woolMsg != null">
+		        WOOL_MSG = #{woolMsg,jdbcType=VARCHAR},
+			</if>
+			<if test="countUserId != null">
+		        COUNT_USER_ID = #{countUserId,jdbcType=INTEGER},
+			</if>
+			<if test="woolStatus != null">
+		        WOOL_STATUS = #{woolStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="deleteFlag != null">
+		        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+			</if>
+			UPDATED_AT = CURRENT_TIMESTAMP,
+			<if test="updatedBy != null">
+		        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="delete" parameterType="com.sirius.robots.dal.model.WoolInfo">
+		UPDATE T_WOOL_INFO
+		SET
+		<if test="updatedBy != null">
+			UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+		</if>
+		UPDATED_AT = CURRENT_TIMESTAMP,
+		DELETE_FLAG=1
+		WHERE id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<select id="selectBySelective" parameterType="com.sirius.robots.dal.model.WoolInfo"
+					resultMap="BaseResultMap">
+			SELECT
+			<include refid="Base_Column_List"/>
+			FROM T_WOOL_INFO
+			<where>
+				<if test="id != null">
+				AND ID = #{id,jdbcType=INTEGER}
+				</if>
+				<if test="woolType != null and woolType != ''">
+				AND WOOL_TYPE = #{woolType,jdbcType=VARCHAR}
+				</if>
+				<if test="channelType != null and channelType != ''">
+				AND CHANNEL_TYPE = #{channelType,jdbcType=VARCHAR}
+				</if>
+				<if test="dateType != null and dateType != ''">
+				AND DATE_TYPE = #{dateType,jdbcType=VARCHAR}
+				</if>
+				<if test="woolDate != null and woolDate != ''">
+				AND WOOL_DATE = #{woolDate,jdbcType=VARCHAR}
+				</if>
+				<if test="nextTime != null">
+				AND NEXT_TIME &gt;= #{nextTime,jdbcType=TIMESTAMP}
+					AND NEXT_TIME &lt; DATE_ADD(#{nextTime,jdbcType=TIMESTAMP}, INTERVAL 1 DAY)
+				</if>
+				<if test="woolTitle != null and woolTitle != ''">
+				AND WOOL_TITLE = #{woolTitle,jdbcType=VARCHAR}
+				</if>
+				<if test="woolMsg != null and woolMsg != ''">
+				AND WOOL_MSG = LIKE CONCAT('%',#{woolMsg,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="countUserId != null">
+				AND (COUNT_USER_ID = #{countUserId,jdbcType=INTEGER}
+					OR CHANNEL_TYPE = 'SYSTEM')
+				</if>
+				<if test="woolStatus != null and woolStatus != ''">
+				AND WOOL_STATUS = #{woolStatus,jdbcType=VARCHAR}
+				</if>
+				<if test="deleteFlag != null">
+				AND DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT}
+				</if>
+				<if test="createdAt != null">
+				AND CREATED_AT = #{createdAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="createdBy != null and createdBy != ''">
+				AND CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+				</if>
+				<if test="updatedAt != null">
+				AND UPDATED_AT = #{updatedAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="updatedBy != null and updatedBy != ''">
+				AND UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+				</if>
+		</where>
+		ORDER BY ID DESC
+	</select>
+
+</mapper>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sirius.robots.dal.mapper.WxUserInfoMapper">
+	<resultMap id="BaseResultMap" type="com.sirius.robots.dal.model.WxUserInfo">
+		<result column="ID"		 jdbcType="INTEGER"		 property="id"/>
+		<result column="USER_CODE"		 jdbcType="VARCHAR"		 property="userCode"/>
+		<result column="USER_NAME"		 jdbcType="VARCHAR"		 property="userName"/>
+		<result column="USER_TYPE"		 jdbcType="VARCHAR"		 property="userType"/>
+		<result column="MOBILE"		 jdbcType="VARCHAR"		 property="mobile"/>
+		<result column="EMAIL"		 jdbcType="VARCHAR"		 property="email"/>
+		<result column="USER_STATUS"		 jdbcType="VARCHAR"		 property="userStatus"/>
+		<result column="DELETE_FLAG"		 jdbcType="TINYINT"		 property="deleteFlag"/>
+		<result column="CREATED_AT"		 jdbcType="TIMESTAMP"		 property="createdAt"/>
+		<result column="CREATED_BY"		 jdbcType="VARCHAR"		 property="createdBy"/>
+		<result column="UPDATED_AT"		 jdbcType="TIMESTAMP"		 property="updatedAt"/>
+		<result column="UPDATED_BY"		 jdbcType="VARCHAR"		 property="updatedBy"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		 ID, USER_CODE, USER_NAME, USER_TYPE, MOBILE, EMAIL,
+		 USER_STATUS, DELETE_FLAG, CREATED_AT, CREATED_BY, UPDATED_AT,
+		 UPDATED_BY
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_WX_USER_INFO
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</select>
+	<insert id="insert" parameterType="com.sirius.robots.dal.model.WxUserInfo" useGeneratedKeys="true"
+				keyProperty="id">
+		INSERT INTO T_WX_USER_INFO(
+		 USER_CODE, USER_NAME, USER_TYPE, MOBILE, EMAIL,
+		 USER_STATUS, DELETE_FLAG, CREATED_AT, CREATED_BY
+		 )VALUES( 
+			#{userCode,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{userType,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},
+		#{userStatus,jdbcType=VARCHAR},#{deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{createdBy,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true"
+>
+		INSERT INTO T_WX_USER_INFO(
+		 USER_CODE, USER_NAME, USER_TYPE, MOBILE, EMAIL,
+		 USER_STATUS, DELETE_FLAG, CREATED_AT, CREATED_BY
+		 )VALUES
+		<foreach collection="list" index="index" item="item" separator=",">
+		(
+		#{item.userCode,jdbcType=VARCHAR},#{item.userName,jdbcType=VARCHAR},#{item.userType,jdbcType=VARCHAR},#{item.mobile,jdbcType=VARCHAR},#{item.email,jdbcType=VARCHAR},
+		#{item.userStatus,jdbcType=VARCHAR},#{item.deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{item.createdBy,jdbcType=VARCHAR}
+		)
+		</foreach>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.sirius.robots.dal.model.WxUserInfo">
+		UPDATE T_WX_USER_INFO
+		<set>
+			<if test="userCode != null">
+		        USER_CODE = #{userCode,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+		        USER_NAME = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+		        USER_TYPE = #{userType,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+		        MOBILE = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+		        EMAIL = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="userStatus != null">
+		        USER_STATUS = #{userStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="deleteFlag != null">
+		        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+			</if>
+			UPDATED_AT = CURRENT_TIMESTAMP,
+			<if test="updatedBy != null">
+		        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="delete" parameterType="com.sirius.robots.dal.model.WxUserInfo">
+		UPDATE T_WX_USER_INFO
+		SET
+		<if test="updatedBy != null">
+			UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+		</if>
+		UPDATED_AT = CURRENT_TIMESTAMP,
+		DELETE_FLAG=1
+		WHERE id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<select id="selectBySelective" parameterType="com.sirius.robots.dal.model.WxUserInfo"
+					resultMap="BaseResultMap">
+			SELECT
+			<include refid="Base_Column_List"/>
+			FROM T_WX_USER_INFO
+			<where>
+				<if test="id != null">
+				AND ID = #{id,jdbcType=INTEGER}
+				</if>
+				<if test="userCode != null and userCode != ''">
+				AND USER_CODE = #{userCode,jdbcType=VARCHAR}
+				</if>
+				<if test="userName != null and userName != ''">
+				AND USER_NAME = #{userName,jdbcType=VARCHAR}
+				</if>
+				<if test="userType != null and userType != ''">
+				AND USER_TYPE = #{userType,jdbcType=VARCHAR}
+				</if>
+				<if test="mobile != null and mobile != ''">
+				AND MOBILE = #{mobile,jdbcType=VARCHAR}
+				</if>
+				<if test="email != null and email != ''">
+				AND EMAIL = #{email,jdbcType=VARCHAR}
+				</if>
+				<if test="userStatus != null and userStatus != ''">
+				AND USER_STATUS = #{userStatus,jdbcType=VARCHAR}
+				</if>
+				<if test="deleteFlag != null">
+				AND DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT}
+				</if>
+				<if test="createdAt != null">
+				AND CREATED_AT = #{createdAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="createdBy != null and createdBy != ''">
+				AND CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+				</if>
+				<if test="updatedAt != null">
+				AND UPDATED_AT = #{updatedAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="updatedBy != null and updatedBy != ''">
+				AND UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+				</if>
+		</where>
+		ORDER BY ID DESC
+	</select>
+
+</mapper>

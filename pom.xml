@@ -51,6 +51,8 @@
         <thymeleaf.dialect.version>2.3.0</thymeleaf.dialect.version>
         <weixin-java-mp.version>3.5.0</weixin-java-mp.version>
         <pagehelper.version>5.1.6</pagehelper.version>
+
+        <joda.time.version>2.9.1</joda.time.version>
 	</properties>
 
     <dependencyManagement>
@@ -148,6 +150,11 @@
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper</artifactId>
                 <version>${pagehelper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda.time.version}</version>
             </dependency>
 
 

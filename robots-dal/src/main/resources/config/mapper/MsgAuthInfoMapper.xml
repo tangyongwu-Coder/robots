@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sirius.robots.dal.mapper.MsgAuthInfoMapper">
+	<resultMap id="BaseResultMap" type="com.sirius.robots.dal.model.MsgAuthInfo">
+		<result column="ID"		 jdbcType="INTEGER"		 property="id"/>
+		<result column="MSG_ID"		 jdbcType="VARCHAR"		 property="msgId"/>
+		<result column="MSG_TYPE"		 jdbcType="VARCHAR"		 property="msgType"/>
+		<result column="MSG_REQ"		 jdbcType="VARCHAR"		 property="msgReq"/>
+		<result column="MSG_RES"		 jdbcType="VARCHAR"		 property="msgRes"/>
+		<result column="MSG_STATUS"		 jdbcType="VARCHAR"		 property="msgStatus"/>
+		<result column="USER_ID"		 jdbcType="INTEGER"		 property="userId"/>
+		<result column="IS_READ"		 jdbcType="VARCHAR"		 property="isRead"/>
+		<result column="DELETE_FLAG"		 jdbcType="TINYINT"		 property="deleteFlag"/>
+		<result column="CREATED_AT"		 jdbcType="TIMESTAMP"		 property="createdAt"/>
+		<result column="CREATED_BY"		 jdbcType="VARCHAR"		 property="createdBy"/>
+		<result column="UPDATED_AT"		 jdbcType="TIMESTAMP"		 property="updatedAt"/>
+		<result column="UPDATED_BY"		 jdbcType="VARCHAR"		 property="updatedBy"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		 ID, MSG_ID, MSG_TYPE, MSG_REQ, MSG_RES, MSG_STATUS,
+		 USER_ID, IS_READ, DELETE_FLAG, CREATED_AT, CREATED_BY,
+		 UPDATED_AT, UPDATED_BY
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_MSG_AUTH_INFO
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</select>
+	<insert id="insert" parameterType="com.sirius.robots.dal.model.MsgAuthInfo" useGeneratedKeys="true"
+				keyProperty="id">
+		INSERT INTO T_MSG_AUTH_INFO(
+		 MSG_ID, MSG_TYPE, MSG_REQ, MSG_RES, MSG_STATUS,
+		 USER_ID, IS_READ, DELETE_FLAG, CREATED_AT, CREATED_BY
+		
+		 )VALUES( 
+			#{msgId,jdbcType=VARCHAR},#{msgType,jdbcType=VARCHAR},#{msgReq,jdbcType=VARCHAR},#{msgRes,jdbcType=VARCHAR},#{msgStatus,jdbcType=VARCHAR},
+		#{userId,jdbcType=INTEGER},#{isRead,jdbcType=VARCHAR},#{deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{createdBy,jdbcType=VARCHAR}
+		
+		)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true"
+>
+		INSERT INTO T_MSG_AUTH_INFO(
+		 MSG_ID, MSG_TYPE, MSG_REQ, MSG_RES, MSG_STATUS,
+		 USER_ID, IS_READ, DELETE_FLAG, CREATED_AT, CREATED_BY
+		
+		 )VALUES
+		<foreach collection="list" index="index" item="item" separator=",">
+		(
+		#{item.msgId,jdbcType=VARCHAR},#{item.msgType,jdbcType=VARCHAR},#{item.msgReq,jdbcType=VARCHAR},#{item.msgRes,jdbcType=VARCHAR},#{item.msgStatus,jdbcType=VARCHAR},
+		#{item.userId,jdbcType=INTEGER},#{item.isRead,jdbcType=VARCHAR},#{item.deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{item.createdBy,jdbcType=VARCHAR}
+		
+		)
+		</foreach>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.sirius.robots.dal.model.MsgAuthInfo">
+		UPDATE T_MSG_AUTH_INFO
+		<set>
+			<if test="msgId != null">
+		        MSG_ID = #{msgId,jdbcType=VARCHAR},
+			</if>
+			<if test="msgType != null">
+		        MSG_TYPE = #{msgType,jdbcType=VARCHAR},
+			</if>
+			<if test="msgReq != null">
+		        MSG_REQ = #{msgReq,jdbcType=VARCHAR},
+			</if>
+			<if test="msgRes != null">
+		        MSG_RES = #{msgRes,jdbcType=VARCHAR},
+			</if>
+			<if test="msgStatus != null">
+		        MSG_STATUS = #{msgStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+		        USER_ID = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isRead != null">
+		        IS_READ = #{isRead,jdbcType=VARCHAR},
+			</if>
+			<if test="deleteFlag != null">
+		        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+			</if>
+			UPDATED_AT = CURRENT_TIMESTAMP,
+			<if test="updatedBy != null">
+		        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="delete" parameterType="com.sirius.robots.dal.model.MsgAuthInfo">
+		UPDATE T_MSG_AUTH_INFO
+		SET
+		<if test="updatedBy != null">
+			UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+		</if>
+		UPDATED_AT = CURRENT_TIMESTAMP,
+		DELETE_FLAG=1
+		WHERE id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<select id="selectBySelective" parameterType="com.sirius.robots.dal.model.MsgAuthInfo"
+					resultMap="BaseResultMap">
+			SELECT
+			<include refid="Base_Column_List"/>
+			FROM T_MSG_AUTH_INFO
+			<where>
+				<if test="id != null">
+				AND ID = #{id,jdbcType=INTEGER}
+				</if>
+				<if test="msgId != null and msgId != ''">
+				AND MSG_ID = #{msgId,jdbcType=VARCHAR}
+				</if>
+				<if test="msgType != null and msgType != ''">
+				AND MSG_TYPE = #{msgType,jdbcType=VARCHAR}
+				</if>
+				<if test="msgReq != null and msgReq != ''">
+				AND MSG_REQ = #{msgReq,jdbcType=VARCHAR}
+				</if>
+				<if test="msgRes != null and msgRes != ''">
+				AND MSG_RES = #{msgRes,jdbcType=VARCHAR}
+				</if>
+				<if test="msgStatus != null and msgStatus != ''">
+				AND MSG_STATUS = #{msgStatus,jdbcType=VARCHAR}
+				</if>
+				<if test="userId != null">
+				AND USER_ID = #{userId,jdbcType=INTEGER}
+				</if>
+				<if test="isRead != null and isRead != ''">
+				AND IS_READ = #{isRead,jdbcType=VARCHAR}
+				</if>
+				<if test="deleteFlag != null">
+				AND DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT}
+				</if>
+				<if test="createdAt != null">
+				AND CREATED_AT = #{createdAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="createdBy != null and createdBy != ''">
+				AND CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+				</if>
+				<if test="updatedAt != null">
+				AND UPDATED_AT = #{updatedAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="updatedBy != null and updatedBy != ''">
+				AND UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+				</if>
+		</where>
+		ORDER BY ID DESC
+	</select>
+
+</mapper>

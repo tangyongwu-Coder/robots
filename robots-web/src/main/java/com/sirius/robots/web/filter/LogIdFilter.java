@@ -43,6 +43,10 @@ public class LogIdFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String servletPath = ((HttpServletRequest) servletRequest).getServletPath();
         log.info("验证用户,servletPath:{}",servletPath);
+        if(servletPath.startsWith("/wx")){
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
         HttpSession session = request.getSession();
         Object userInfo = session.getAttribute("userInfo");
         if(Objects.isNull(userInfo)){

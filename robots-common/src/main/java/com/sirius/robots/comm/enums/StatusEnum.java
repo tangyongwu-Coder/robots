@@ -21,5 +21,13 @@ public enum StatusEnum {
 
     /**  描述 */
     private String desc;
+    public static String explain(String code) {
 
+        for (StatusEnum statusEnum : StatusEnum.values()) {
+            if (statusEnum.getCode().equals(code)) {
+                return statusEnum.getDesc();
+            }
+        }
+        return null;
+    }
 }
