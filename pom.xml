@@ -39,7 +39,7 @@
 
         <HikariCP.version>2.6.3</HikariCP.version>
         <spring.cloud.version>Edgware.SR2</spring.cloud.version>
-        <start-class>DemoApplication</start-class>
+        <start-class>com.sirius.robots.web.DemoApplication</start-class>
         <dubbo.version>2.5.3</dubbo.version>
         <zkclient.version>0.1</zkclient.version>
         <zookeeper.version>3.5.1-alpha</zookeeper.version>

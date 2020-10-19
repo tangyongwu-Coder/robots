@@ -17,15 +17,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>robots-service</artifactId>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>robots-manager</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sirius</groupId>
-            <artifactId>robots-manager</artifactId>
-        </dependency>
-
     </dependencies>
     <build>
         <finalName>robots-manager</finalName>
