@@ -7,6 +7,8 @@
 		<result column="MSG_TYPE"		 jdbcType="VARCHAR"		 property="msgType"/>
 		<result column="MSG_REQ"		 jdbcType="VARCHAR"		 property="msgReq"/>
 		<result column="MSG_RES"		 jdbcType="VARCHAR"		 property="msgRes"/>
+		<result column="IS_GROUP"		 jdbcType="VARCHAR"		 property="isGroup"/>
+		<result column="IS_OUT"		 jdbcType="VARCHAR"		 property="isOut"/>
 		<result column="MSG_STATUS"		 jdbcType="VARCHAR"		 property="msgStatus"/>
 		<result column="USER_ID"		 jdbcType="INTEGER"		 property="userId"/>
 		<result column="IS_READ"		 jdbcType="VARCHAR"		 property="isRead"/>
@@ -18,9 +20,9 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		 ID, MSG_ID, MSG_TYPE, MSG_REQ, MSG_RES, MSG_STATUS,
-		 USER_ID, IS_READ, DELETE_FLAG, CREATED_AT, CREATED_BY,
-		 UPDATED_AT, UPDATED_BY
+		 ID, MSG_ID, MSG_TYPE, MSG_REQ, MSG_RES, IS_GROUP,
+		 IS_OUT, MSG_STATUS, USER_ID, IS_READ, DELETE_FLAG,
+		 CREATED_AT, CREATED_BY, UPDATED_AT, UPDATED_BY
 	</sql>
 
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -32,28 +34,28 @@
 	<insert id="insert" parameterType="com.sirius.robots.dal.model.MsgAuthInfo" useGeneratedKeys="true"
 				keyProperty="id">
 		INSERT INTO T_MSG_AUTH_INFO(
-		 MSG_ID, MSG_TYPE, MSG_REQ, MSG_RES, MSG_STATUS,
-		 USER_ID, IS_READ, DELETE_FLAG, CREATED_AT, CREATED_BY
-		
+		 MSG_ID, MSG_TYPE, MSG_REQ, MSG_RES, IS_GROUP,
+		 IS_OUT, MSG_STATUS, USER_ID, IS_READ, DELETE_FLAG,
+		 CREATED_AT, CREATED_BY
 		 )VALUES( 
-			#{msgId,jdbcType=VARCHAR},#{msgType,jdbcType=VARCHAR},#{msgReq,jdbcType=VARCHAR},#{msgRes,jdbcType=VARCHAR},#{msgStatus,jdbcType=VARCHAR},
-		#{userId,jdbcType=INTEGER},#{isRead,jdbcType=VARCHAR},#{deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{createdBy,jdbcType=VARCHAR}
-		
+			#{msgId,jdbcType=VARCHAR},#{msgType,jdbcType=VARCHAR},#{msgReq,jdbcType=VARCHAR},#{msgRes,jdbcType=VARCHAR},#{isGroup,jdbcType=VARCHAR},
+		#{isOut,jdbcType=VARCHAR},#{msgStatus,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{isRead,jdbcType=VARCHAR},#{deleteFlag,jdbcType=TINYINT},
+		CURRENT_TIMESTAMP,#{createdBy,jdbcType=VARCHAR}
 		)
 	</insert>
 
 	<insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true"
 >
 		INSERT INTO T_MSG_AUTH_INFO(
-		 MSG_ID, MSG_TYPE, MSG_REQ, MSG_RES, MSG_STATUS,
-		 USER_ID, IS_READ, DELETE_FLAG, CREATED_AT, CREATED_BY
-		
+		 MSG_ID, MSG_TYPE, MSG_REQ, MSG_RES, IS_GROUP,
+		 IS_OUT, MSG_STATUS, USER_ID, IS_READ, DELETE_FLAG,
+		 CREATED_AT, CREATED_BY
 		 )VALUES
 		<foreach collection="list" index="index" item="item" separator=",">
 		(
-		#{item.msgId,jdbcType=VARCHAR},#{item.msgType,jdbcType=VARCHAR},#{item.msgReq,jdbcType=VARCHAR},#{item.msgRes,jdbcType=VARCHAR},#{item.msgStatus,jdbcType=VARCHAR},
-		#{item.userId,jdbcType=INTEGER},#{item.isRead,jdbcType=VARCHAR},#{item.deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,#{item.createdBy,jdbcType=VARCHAR}
-		
+		#{item.msgId,jdbcType=VARCHAR},#{item.msgType,jdbcType=VARCHAR},#{item.msgReq,jdbcType=VARCHAR},#{item.msgRes,jdbcType=VARCHAR},#{item.isGroup,jdbcType=VARCHAR},
+		#{item.isOut,jdbcType=VARCHAR},#{item.msgStatus,jdbcType=VARCHAR},#{item.userId,jdbcType=INTEGER},#{item.isRead,jdbcType=VARCHAR},#{item.deleteFlag,jdbcType=TINYINT},
+		CURRENT_TIMESTAMP,#{item.createdBy,jdbcType=VARCHAR}
 		)
 		</foreach>
 	</insert>
@@ -72,6 +74,12 @@
 			</if>
 			<if test="msgRes != null">
 		        MSG_RES = #{msgRes,jdbcType=VARCHAR},
+			</if>
+			<if test="isGroup != null">
+		        IS_GROUP = #{isGroup,jdbcType=VARCHAR},
+			</if>
+			<if test="isOut != null">
+		        IS_OUT = #{isOut,jdbcType=VARCHAR},
 			</if>
 			<if test="msgStatus != null">
 		        MSG_STATUS = #{msgStatus,jdbcType=VARCHAR},
@@ -124,6 +132,12 @@
 				</if>
 				<if test="msgRes != null and msgRes != ''">
 				AND MSG_RES = #{msgRes,jdbcType=VARCHAR}
+				</if>
+				<if test="isGroup != null and isGroup != ''">
+				AND IS_GROUP = #{isGroup,jdbcType=VARCHAR}
+				</if>
+				<if test="isOut != null and isOut != ''">
+				AND IS_OUT = #{isOut,jdbcType=VARCHAR}
 				</if>
 				<if test="msgStatus != null and msgStatus != ''">
 				AND MSG_STATUS = #{msgStatus,jdbcType=VARCHAR}

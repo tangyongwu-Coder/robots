@@ -1,6 +1,6 @@
 package com.sirius.robots.handler.handler;
 
-import com.sirius.robots.service.WxUserService;
+import com.sirius.robots.service.WxUserMsgService;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class UnsubscribeHandler extends AbstractHandler {
     @Autowired
-    private WxUserService wxUserService;
+    private WxUserMsgService wxUserService;
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                     Map<String, Object> context, WxMpService wxMpService,

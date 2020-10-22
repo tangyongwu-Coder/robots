@@ -1,5 +1,9 @@
 package com.sirius.robots.comm.util;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.regex.Pattern;
+
 /**
  * 验证类正则表达式
  *
@@ -22,4 +26,18 @@ public class ValidatePattenUtil {
 
     /** 用户名格式校验 */
     public static final String USER_NAME_REGEX =  "[a-zA-Z]{1}[a-zA-Z0-9_]{6,15}";
+
+
+
+
+    public static Boolean validate(String patternStr,String val){
+        if(StringUtils.isEmpty(val)){
+            return Boolean.FALSE;
+        }
+        Pattern pattern = Pattern.compile(patternStr);
+        if (!pattern.matcher(val).matches()){
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+    }
 }

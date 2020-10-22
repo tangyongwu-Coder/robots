@@ -19,6 +19,18 @@ public class BigDecimalUtil {
      * 费率保留位数
      */
     private static Integer RATE_SIZE = 1000000;
+    /**
+     *  获取精确金额
+     *
+     * @param amt   金额
+     * @return      精确金额
+     */
+    public static Double getAmtDou(Long amt){
+        if(Objects.isNull(amt)){
+            return null;
+        }
+        return new BigDecimal(amt).divide(new BigDecimal(AMT_SIZE),2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+    }
 
     /**
      *  获取精确金额

@@ -1,6 +1,8 @@
 package com.sirius.robots.manager.util;
 
 import com.sirius.robots.comm.enums.*;
+import com.sirius.robots.comm.enums.msg.BaseMsgTypeEnum;
+import com.sirius.robots.comm.enums.msg.MsgTypeEnum;
 import com.sirius.robots.dal.model.WoolInfo;
 import com.sirius.robots.manager.model.DateBO;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +28,10 @@ public class WoolUtil {
             "平安","工行","网商","中行","光大","广发","民生",
             "兴业"};
 
-    private static String[] PATTERN = {};
+    private static String[] PATTERN = new String[] {};
 
     static {
+        PATTERN = new String[] {};
         PATTERN = getPattern();
     }
     /**
@@ -63,13 +66,7 @@ public class WoolUtil {
         return s;
     }
 
-    public static String getWoolMsg(String msg,MsgTypeEnum msgTypeEnum){
-        return MsgUtil.removeKeyWord(msgTypeEnum, msg);
-    }
-    public static WoolInfo getWool(String msg,MsgTypeEnum msgTypeEnum){
-        String woolMsg = getWoolMsg(msg, msgTypeEnum);
-        return getWool(woolMsg);
-    }
+
     public static WoolInfo getWool(String woolMsg){
         WoolInfo woolInfo = new WoolInfo();
         woolInfo.setWoolType(getWoolType(woolMsg).getCode());
@@ -101,7 +98,7 @@ public class WoolUtil {
             log.debug("dateBO:{}",dateBO);
             if(Objects.nonNull(dateBO)){
                 Date nextDate = dateBO.getNextDate();
-                log.debug("nextDate:{}", com.sirius.robots.comm.util.DateUtils.format(woolInfo.getNextTime(), com.sirius.robots.comm.util.DateUtils.allPattern));
+                log.debug("nextDate:{}", com.sirius.robots.comm.util.DateUtils.format(nextDate, com.sirius.robots.comm.util.DateUtils.allPattern));
                 woolInfo.setNextTime(nextDate);
             }
             return;
@@ -114,13 +111,17 @@ public class WoolUtil {
         DateBO dateBO = new DateBO();
         dateBO.setIsWeek(Boolean.FALSE);
         dateBO.setDateTypeEnum(explain);
-        Date date = formatDate(woolDate);
-        Calendar c = Calendar.getInstance();
-
-        if(date!=null) {
+        Calendar c = null;
+        if(!WoolDateTypeEnum.WEEK.equals(explain)){
+            Date date = formatDate(woolDate);
+            c = Calendar.getInstance();
+            if(Objects.isNull(date)) {
+                return null;
+            }
             c.setTime(date);
             dateBO.setFormatDate(date);
         }
+
         switch (explain){
             case WEEK:
                 processWeek(woolDate,dateBO);
@@ -279,17 +280,15 @@ public class WoolUtil {
         dateBO.setHour(Integer.valueOf(date));
     }
 
-
     public static void main(String[] args) {
-        String msg = "新增周四10点招行霸王餐";
+        String msg = "周四10点招行霸王餐";
         String msg2 = "新增周六11点建行龙卡抢券";
 
         String msg3 = "新增10号11点建行龙卡抢券";
 
         String msg4 = "新增11月10号11点建行龙卡抢券";
-        String msg5 = "新增10号建行龙卡抢券";
-        WoolInfo wool = getWool(msg4, MsgTypeEnum.WOOL_ADD);
-        WoolInfo wool2 = getWool(msg5, MsgTypeEnum.WOOL_ADD);
+        String msg5 = "2";
+        WoolInfo wool2 = getWool(msg);
         System.out.println("wool:"+wool2);
 
     }

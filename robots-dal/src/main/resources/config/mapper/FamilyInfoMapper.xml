@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sirius.robots.dal.mapper.FamilyInfoMapper">
+
+	<resultMap id="BaseResultMap" type="com.sirius.robots.dal.model.FamilyInfo">
+		<result column="ID"		 jdbcType="INTEGER"		 property="id"/>
+		<result column="NAME"		 jdbcType="VARCHAR"		 property="name"/>
+		<result column="REMARK"		 jdbcType="VARCHAR"		 property="remark"/>
+		<result column="STATUS"		 jdbcType="VARCHAR"		 property="status"/>
+		<result column="DELETE_FLAG"		 jdbcType="TINYINT"		 property="deleteFlag"/>
+		<result column="CREATED_AT"		 jdbcType="TIMESTAMP"		 property="createdAt"/>
+		<result column="CREATED_BY"		 jdbcType="VARCHAR"		 property="createdBy"/>
+		<result column="UPDATED_AT"		 jdbcType="TIMESTAMP"		 property="updatedAt"/>
+		<result column="UPDATED_BY"		 jdbcType="VARCHAR"		 property="updatedBy"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		 ID, NAME, REMARK, STATUS, DELETE_FLAG, CREATED_AT,
+		 CREATED_BY, UPDATED_AT, UPDATED_BY
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_FAMILY_INFO
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</select>
+	<insert id="insert" parameterType="com.sirius.robots.dal.model.FamilyInfo" useGeneratedKeys="true"
+				keyProperty="id">
+		INSERT INTO T_FAMILY_INFO(
+		 NAME, REMARK, STATUS, DELETE_FLAG, CREATED_AT,
+		 CREATED_BY
+		 )VALUES( 
+			#{name,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,
+		#{createdBy,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true"
+>
+		INSERT INTO T_FAMILY_INFO(
+		 NAME, REMARK, STATUS, DELETE_FLAG, CREATED_AT,
+		 CREATED_BY
+		 )VALUES
+		<foreach collection="list" index="index" item="item" separator=",">
+		(
+		#{item.name,jdbcType=VARCHAR},#{item.remark,jdbcType=VARCHAR},#{item.status,jdbcType=VARCHAR},#{item.deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,
+		#{item.createdBy,jdbcType=VARCHAR}
+		)
+		</foreach>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.sirius.robots.dal.model.FamilyInfo">
+		UPDATE T_FAMILY_INFO
+		<set>
+			<if test="name != null">
+		        NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+		        REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+		        STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="deleteFlag != null">
+		        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+			</if>
+			UPDATED_AT = CURRENT_TIMESTAMP,
+			<if test="updatedBy != null">
+		        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="delete" parameterType="com.sirius.robots.dal.model.FamilyInfo">
+		UPDATE T_FAMILY_INFO
+		SET
+		<if test="updatedBy != null">
+			UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+		</if>
+		UPDATED_AT = CURRENT_TIMESTAMP,
+		DELETE_FLAG=1
+		WHERE id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<select id="selectBySelective" parameterType="com.sirius.robots.dal.model.FamilyInfo"
+					resultMap="BaseResultMap">
+			SELECT
+			<include refid="Base_Column_List"/>
+			FROM T_FAMILY_INFO
+			<where>
+				<if test="id != null">
+				AND ID = #{id,jdbcType=INTEGER}
+				</if>
+				<if test="name != null and name != ''">
+				AND NAME = #{name,jdbcType=VARCHAR}
+				</if>
+				<if test="remark != null and remark != ''">
+				AND REMARK = #{remark,jdbcType=VARCHAR}
+				</if>
+				<if test="status != null and status != ''">
+				AND STATUS = #{status,jdbcType=VARCHAR}
+				</if>
+				<if test="deleteFlag != null">
+				AND DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT}
+				</if>
+				<if test="createdAt != null">
+				AND CREATED_AT = #{createdAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="createdBy != null and createdBy != ''">
+				AND CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+				</if>
+				<if test="updatedAt != null">
+				AND UPDATED_AT = #{updatedAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="updatedBy != null and updatedBy != ''">
+				AND UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+				</if>
+		</where>
+		ORDER BY ID DESC
+	</select>
+
+	<select id="selectByName" parameterType="com.sirius.robots.dal.model.FamilyInfo"
+			resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM T_FAMILY_INFO
+		WHERE NAME = #{name,jdbcType=VARCHAR}
+
+	</select>
+
+</mapper>

@@ -9,6 +9,6 @@ package com.sirius.robots.comm.enums;
 public interface BaseErrorEnum {
 
     String getCode();
-    
+
     String getMsg();
 }

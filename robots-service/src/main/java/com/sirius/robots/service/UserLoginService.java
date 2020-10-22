@@ -1,5 +1,6 @@
 package com.sirius.robots.service;
 
+import com.sirius.robots.comm.constants.ServiceConstants;
 import com.sirius.robots.comm.enums.DeleteFlagEnum;
 import com.sirius.robots.comm.enums.ErrorCodeEnum;
 import com.sirius.robots.comm.enums.FlagEnum;
@@ -8,7 +9,6 @@ import com.sirius.robots.service.model.req.UserForgotReqDTO;
 import com.sirius.robots.service.model.req.UserLoginReqDTO;
 import com.sirius.robots.service.model.req.UserRegisterReqDTO;
 import com.sirius.robots.comm.util.BeanMapperUtil;
-import com.sirius.robots.comm.util.SystemConstant;
 import com.sirius.robots.dal.model.UserInfo;
 import com.sirius.robots.manager.UserManager;
 import lombok.extern.slf4j.Slf4j;
@@ -71,7 +71,7 @@ public class UserLoginService {
         }
         userInfo = BeanMapperUtil.objConvert(reqDTO,UserInfo.class);
         userInfo.setDeleteFlag(DeleteFlagEnum.NORMAL.getCode());
-        userInfo.setCreatedBy(SystemConstant.SYSTEM);
+        userInfo.setCreatedBy(ServiceConstants.SYSTEM_NAME);
         userInfo.setRememberMe(FlagEnum.FALSE.getCodeStr());
         userInfo.setUseAble(FlagEnum.TRUE.getCodeStr());
         userInfo.setIsManager(FlagEnum.FALSE.getCodeStr());

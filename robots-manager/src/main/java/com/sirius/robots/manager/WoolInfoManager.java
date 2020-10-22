@@ -1,16 +1,17 @@
 package com.sirius.robots.manager;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.sirius.robots.comm.bo.PageDTO;
 import com.sirius.robots.comm.constants.ServiceConstants;
 import com.sirius.robots.comm.enums.*;
+import com.sirius.robots.comm.enums.msg.MsgTypeEnum;
+import com.sirius.robots.comm.enums.msg.WoolMsgTypeEnum;
 import com.sirius.robots.comm.exception.RobotsServiceException;
 import com.sirius.robots.comm.util.DateUtils;
 import com.sirius.robots.dal.mapper.WoolInfoMapper;
 import com.sirius.robots.dal.model.WoolInfo;
 import com.sirius.robots.manager.model.WxUserBO;
-import com.sirius.robots.manager.util.DateUtil;
+import com.sirius.robots.manager.util.HelpUtil;
 import com.sirius.robots.manager.util.MsgUtil;
 import com.sirius.robots.manager.util.WoolUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,14 +33,18 @@ public class WoolInfoManager {
     @Autowired
     private WoolInfoMapper woolInfoMapper;
 
-    public String addWool(String msg,MsgTypeEnum msgType,WxUserBO userBO){
+    public String addWool(String msg, WoolMsgTypeEnum msgType, WxUserBO userBO){
         Integer userId = userBO.getUserId();
-        String woolMsg = WoolUtil.getWoolMsg(msg, msgType);
+        String woolMsg = MsgUtil.getMsg(msg, msgType);
         //首先查询线报是否存在
         WoolInfo woolInfo = queryByWoolMsg(woolMsg,userId);
         Boolean isManager = userBO.getIsManager();
         if(Objects.isNull(woolInfo)){
             woolInfo = WoolUtil.getWool(woolMsg);
+            if(Objects.isNull(woolInfo.getNextTime())){
+                String unknown = HelpUtil.getUnknown(MsgTypeEnum.WOOL, userBO);
+                throw new RobotsServiceException(MsgErrorEnum.UN_KNOWN.getCode(),unknown);
+            }
             woolInfo.setChannelType(isManager?ChannelTypeEnum.SYSTEM.getCode() : ChannelTypeEnum.USER.getCode());
             woolInfo.setCreatedBy(ServiceConstants.SYSTEM_NAME);
             woolInfo.setWoolStatus(StatusEnum.NORMAL.getCode());
@@ -61,13 +65,7 @@ public class WoolInfoManager {
 
     }
 
-
-
-    public String editWool(String msg,MsgTypeEnum msgType,WxUserBO userBO){
-      return addWool(msg,msgType,userBO);
-    }
-
-    public String deleteWool(String msg,MsgTypeEnum msgType,WxUserBO userBO){
+    public String deleteWool(String msg,WoolMsgTypeEnum msgType,WxUserBO userBO){
         WoolInfo woolInfo = getWool(msg,msgType,userBO);
         if(Objects.nonNull(woolInfo)){
             woolInfo.setUpdatedBy(ServiceConstants.SYSTEM_NAME);
@@ -75,7 +73,7 @@ public class WoolInfoManager {
         }
         return msgType.getMsg()+"成功。";
     }
-    public String disableWool(String msg,MsgTypeEnum msgType,WxUserBO userBO){
+    public String disableWool(String msg,WoolMsgTypeEnum msgType,WxUserBO userBO){
         if(!userBO.getIsManager()){
             throw new RobotsServiceException(MsgErrorEnum.USER_NOT_PERMISSION);
         }
@@ -87,7 +85,7 @@ public class WoolInfoManager {
         }
         return msgType.getMsg()+"成功。";
     }
-    public String enableWool(String msg,MsgTypeEnum msgType,WxUserBO userBO){
+    public String enableWool(String msg,WoolMsgTypeEnum msgType,WxUserBO userBO){
         if(!userBO.getIsManager()){
             throw new RobotsServiceException(MsgErrorEnum.USER_NOT_PERMISSION);
         }
@@ -100,8 +98,8 @@ public class WoolInfoManager {
         return msgType.getMsg()+"成功。";
     }
 
-    private WoolInfo getWool(String msg,MsgTypeEnum msgType,WxUserBO userBO){
-        String woolMsg = WoolUtil.getWoolMsg(msg, msgType);
+    private WoolInfo getWool(String msg,WoolMsgTypeEnum msgType,WxUserBO userBO){
+        String woolMsg = MsgUtil.getMsg(msg, msgType);
         Integer id = MsgUtil.isNumber(woolMsg);
         Integer userId = userBO.getUserId();
         WoolInfo woolInfo = null;
@@ -127,9 +125,9 @@ public class WoolInfoManager {
         return woolInfos.get(0);
     }
 
-    public String queryWool(String msg,MsgTypeEnum msgType,WxUserBO userBO){
+    public String queryWool(String msg,WoolMsgTypeEnum msgType,WxUserBO userBO){
         Integer userId = userBO.getUserId();
-        String woolMsg = WoolUtil.getWoolMsg(msg, msgType);
+        String woolMsg = MsgUtil.getMsg(msg, msgType);
         WoolInfo query = new WoolInfo();
         query.setWoolMsg(woolMsg);
         query.setCountUserId(userId);
@@ -149,9 +147,9 @@ public class WoolInfoManager {
        return listToString(result,isManager);
     }
 
-    public String queryTodayWool(String msg,MsgTypeEnum msgType,WxUserBO userBO){
+    public String queryTodayWool(String msg,WoolMsgTypeEnum msgType,WxUserBO userBO){
         Integer userId = userBO.getUserId();
-        String woolMsg = WoolUtil.getWoolMsg(msg, msgType);
+        String woolMsg = MsgUtil.getMsg(msg, msgType);
         WoolInfo query = new WoolInfo();
         query.setWoolMsg(woolMsg);
         query.setCountUserId(userId);
@@ -168,13 +166,9 @@ public class WoolInfoManager {
         return listToString(list,isManager);
     }
 
-    private String getRes(WoolInfo woolInfo,MsgTypeEnum msgType,Boolean isManager){
+    private String getRes(WoolInfo woolInfo,WoolMsgTypeEnum msgType,Boolean isManager){
         StringBuilder sb = new StringBuilder();
-        if(MsgTypeEnum.WOOL_ADD.equals(msgType)){
-            sb.append("线报新增成功!").append("\n");
-        }else if(MsgTypeEnum.WOOL_EDIT.equals(msgType)){
-            sb.append("线报修改成功!").append("\n");
-        }
+        sb.append("线报录入成功!").append("\n");
         String woolStr = toString(woolInfo,isManager);
         sb.append(woolStr).append("\n");
         return sb.toString();

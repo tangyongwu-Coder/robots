@@ -12,7 +12,10 @@ public class WxUserBO {
      *
      */
     private Integer userId;
-
+    /**
+     * 家庭编号
+     */
+    private Integer familyId;
     /**
      * 微信编号
      */
@@ -74,5 +77,10 @@ public class WxUserBO {
      * 是否授权
      */
     private Boolean isAuth;
+
+    /**
+     * 是否家庭
+     */
+    private Boolean isFamily;
 
 }

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sirius.robots.dal.mapper.SpendInfoMapper">
+
+	<resultMap id="BaseResultMap" type="com.sirius.robots.dal.model.SpendInfo">
+		<result column="ID"		 jdbcType="INTEGER"		 property="id"/>
+		<result column="SPEND_TYPE"		 jdbcType="VARCHAR"		 property="spendType"/>
+		<result column="AMT"		 jdbcType="BIGINT"		 property="amt"/>
+		<result column="CHANNEL"		 jdbcType="VARCHAR"		 property="channel"/>
+		<result column="REMARK"		 jdbcType="VARCHAR"		 property="remark"/>
+		<result column="STATUS"		 jdbcType="VARCHAR"		 property="status"/>
+		<result column="USER_ID"		 jdbcType="INTEGER"		 property="userId"/>
+		<result column="FAMILY_ID"		 jdbcType="INTEGER"		 property="familyId"/>
+		<result column="COUNT_DATE"		 jdbcType="VARCHAR"		 property="countDate"/>
+		<result column="DELETE_FLAG"		 jdbcType="TINYINT"		 property="deleteFlag"/>
+		<result column="CREATED_AT"		 jdbcType="TIMESTAMP"		 property="createdAt"/>
+		<result column="CREATED_BY"		 jdbcType="VARCHAR"		 property="createdBy"/>
+		<result column="UPDATED_AT"		 jdbcType="TIMESTAMP"		 property="updatedAt"/>
+		<result column="UPDATED_BY"		 jdbcType="VARCHAR"		 property="updatedBy"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		 ID, SPEND_TYPE, AMT, CHANNEL, REMARK, STATUS,
+		 USER_ID, FAMILY_ID, COUNT_DATE, DELETE_FLAG, CREATED_AT,
+		 CREATED_BY, UPDATED_AT, UPDATED_BY
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_SPEND_INFO
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</select>
+	<insert id="insert" parameterType="com.sirius.robots.dal.model.SpendInfo" useGeneratedKeys="true"
+				keyProperty="id">
+		INSERT INTO T_SPEND_INFO(
+		 SPEND_TYPE, AMT, CHANNEL, REMARK, STATUS,
+		 USER_ID, FAMILY_ID, COUNT_DATE, DELETE_FLAG, CREATED_AT,
+		 CREATED_BY
+		 )VALUES( 
+			#{spendType,jdbcType=VARCHAR},#{amt,jdbcType=BIGINT},#{channel,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},
+		#{userId,jdbcType=INTEGER},#{familyId,jdbcType=INTEGER},#{countDate,jdbcType=VARCHAR},#{deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,
+		#{createdBy,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true"
+>
+		INSERT INTO T_SPEND_INFO(
+		 SPEND_TYPE, AMT, CHANNEL, REMARK, STATUS,
+		 USER_ID, FAMILY_ID, COUNT_DATE, DELETE_FLAG, CREATED_AT,
+		 CREATED_BY
+		 )VALUES
+		<foreach collection="list" index="index" item="item" separator=",">
+		(
+		#{item.spendType,jdbcType=VARCHAR},#{item.amt,jdbcType=BIGINT},#{item.channel,jdbcType=VARCHAR},#{item.remark,jdbcType=VARCHAR},#{item.status,jdbcType=VARCHAR},
+		#{item.userId,jdbcType=INTEGER},#{item.familyId,jdbcType=INTEGER},#{item.countDate,jdbcType=VARCHAR},#{item.deleteFlag,jdbcType=TINYINT},CURRENT_TIMESTAMP,
+		#{item.createdBy,jdbcType=VARCHAR}
+		)
+		</foreach>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.sirius.robots.dal.model.SpendInfo">
+		UPDATE T_SPEND_INFO
+		<set>
+			<if test="spendType != null">
+		        SPEND_TYPE = #{spendType,jdbcType=VARCHAR},
+			</if>
+			<if test="amt != null">
+		        AMT = #{amt,jdbcType=BIGINT},
+			</if>
+			<if test="channel != null">
+		        CHANNEL = #{channel,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+		        REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+		        STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+		        USER_ID = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="familyId != null">
+		        FAMILY_ID = #{familyId,jdbcType=INTEGER},
+			</if>
+			<if test="countDate != null">
+		        COUNT_DATE = #{countDate,jdbcType=VARCHAR},
+			</if>
+			<if test="deleteFlag != null">
+		        DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
+			</if>
+			UPDATED_AT = CURRENT_TIMESTAMP,
+			<if test="updatedBy != null">
+		        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="delete" parameterType="com.sirius.robots.dal.model.SpendInfo">
+		UPDATE T_SPEND_INFO
+		SET
+		<if test="updatedBy != null">
+			UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+		</if>
+		UPDATED_AT = CURRENT_TIMESTAMP,
+		DELETE_FLAG=1
+		WHERE id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<select id="selectBySelective" parameterType="com.sirius.robots.dal.model.SpendInfo"
+					resultMap="BaseResultMap">
+			SELECT
+			<include refid="Base_Column_List"/>
+			FROM T_SPEND_INFO
+			<where>
+				<if test="id != null">
+				AND ID = #{id,jdbcType=INTEGER}
+				</if>
+				<if test="spendType != null and spendType != ''">
+				AND SPEND_TYPE = #{spendType,jdbcType=VARCHAR}
+				</if>
+				<if test="amt != null">
+				AND AMT = #{amt,jdbcType=BIGINT}
+				</if>
+				<if test="channel != null and channel != ''">
+				AND CHANNEL = #{channel,jdbcType=VARCHAR}
+				</if>
+				<if test="remark != null and remark != ''">
+				AND REMARK = #{remark,jdbcType=VARCHAR}
+				</if>
+				<if test="status != null and status != ''">
+				AND STATUS = #{status,jdbcType=VARCHAR}
+				</if>
+				<if test="userId != null">
+				AND USER_ID = #{userId,jdbcType=INTEGER}
+				</if>
+				<if test="familyId != null">
+				AND FAMILY_ID = #{familyId,jdbcType=INTEGER}
+				</if>
+				<if test="countDate != null">
+				AND COUNT_DATE = #{countDate,jdbcType=VARCHAR}
+				</if>
+				<if test="deleteFlag != null">
+				AND DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT}
+				</if>
+				<if test="createdAt != null">
+				AND CREATED_AT = #{createdAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="createdBy != null and createdBy != ''">
+				AND CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+				</if>
+				<if test="updatedAt != null">
+				AND UPDATED_AT = #{updatedAt,jdbcType=TIMESTAMP}
+				</if>
+				<if test="updatedBy != null and updatedBy != ''">
+				AND UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+				</if>
+		</where>
+		ORDER BY COUNT_DATE,SPEND_TYPE,ID
+	</select>
+
+</mapper>

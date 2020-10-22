@@ -30,17 +30,20 @@ public class WxPortalController {
         log.info("\n接收到来自微信服务器的认证消息：[{}, {}, {}, {}]", signature,
             timestamp, nonce, echostr);
         if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {
+            log.info("请求参数非法，请核实!");
             throw new IllegalArgumentException("请求参数非法，请核实!");
         }
 
         if (!this.wxService.switchover(appid)) {
+            log.info("未找到对应appid=[%s]的配置，请核实！");
             throw new IllegalArgumentException(String.format("未找到对应appid=[%s]的配置，请核实！", appid));
         }
 
         if (wxService.checkSignature(timestamp, nonce, signature)) {
+            log.info("返回:{}",echostr);
             return echostr;
         }
-
+        log.info("返回2:{}",echostr);
         return "非法请求";
     }
 

@@ -142,7 +142,7 @@
 				AND WOOL_TITLE = #{woolTitle,jdbcType=VARCHAR}
 				</if>
 				<if test="woolMsg != null and woolMsg != ''">
-				AND WOOL_MSG = LIKE CONCAT('%',#{woolMsg,jdbcType=VARCHAR},'%')
+				AND WOOL_MSG LIKE CONCAT('%',#{woolMsg,jdbcType=VARCHAR},'%')
 				</if>
 				<if test="countUserId != null">
 				AND (COUNT_USER_ID = #{countUserId,jdbcType=INTEGER}

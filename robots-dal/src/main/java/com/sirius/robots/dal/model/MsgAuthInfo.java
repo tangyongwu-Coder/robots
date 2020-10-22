@@ -11,7 +11,7 @@ import java.util.Date;
  * MsgAuthInfo实体类
  * 
  * @author 孟星魂
- * @version 5.0 createTime: 2020-10-19
+ * @version 5.0 createTime: 2020-10-20
   */
 @Data
 public class MsgAuthInfo implements Serializable {
@@ -37,6 +37,14 @@ public class MsgAuthInfo implements Serializable {
     * 消息返回
     */
 	private String msgRes;
+   /**
+    * 是否为分组消息
+    */
+	private String isGroup;
+   /**
+    * 是否已退出分组
+    */
+	private String isOut;
    /**
     * NORMAL 正常 DISABLE 禁用
     */

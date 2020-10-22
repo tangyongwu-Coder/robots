@@ -1,13 +1,12 @@
 package com.sirius.robots.handler.handler;
 
 import com.sirius.robots.handler.builder.TextBuilder;
-import com.sirius.robots.service.WxUserService;
+import com.sirius.robots.service.WxUserMsgService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
-import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +18,7 @@ import java.util.Map;
 @Component
 public class SubscribeHandler extends AbstractHandler {
     @Autowired
-    private WxUserService wxUserService;
+    private WxUserMsgService wxUserService;
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                     Map<String, Object> context, WxMpService weixinService,
