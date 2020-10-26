@@ -29,12 +29,8 @@ public class SpendUtil {
 
     public static void main(String[] args) {
         //数字结尾
-        Pattern pattern = Pattern.compile("^[\u0391-\uFFE5](.*?)\\d$");
-        Matcher matcher = pattern.matcher("555");
-        if(matcher.find()) {
-            System.out.println(matcher.group());
-        }
-        System.out.println("无");
+        String amt = Pattern.compile("[^0-9.]").matcher("222.22").replaceAll("").trim();
+        System.out.println(amt);
     }
 
 
@@ -59,7 +55,7 @@ public class SpendUtil {
         SpendInfo spendInfo  = new SpendInfo();
         if(SpendMsgTypeEnum.INCOME.getCode().equals(baseMsgTypeEnum.getCode())
                 || SpendMsgTypeEnum.PAY.getCode().equals(baseMsgTypeEnum.getCode())){
-            getMsgs(msg,spendInfo,baseMsgTypeEnum,userBO);
+            getMsgs(msg,spendInfo,userBO);
             return spendInfo;
         }else if(SpendMsgTypeEnum.QUERY.getCode().equals(baseMsgTypeEnum.getCode())
                 || SpendMsgTypeEnum.COUNT.getCode().equals(baseMsgTypeEnum.getCode())){
@@ -72,7 +68,8 @@ public class SpendUtil {
     }
 
 
-    private static void getMsgOne(String msg,SpendInfo spendInfo, BaseMsgTypeEnum baseMsgTypeEnum,WxUserBO userBO){
+    private static void getMsgOne(String msg,SpendInfo spendInfo,WxUserBO userBO){
+        BaseMsgTypeEnum base = SpendUtil.getMsgType(msg, MsgTypeEnum.SPEND);
         //汉字开头数字结尾
         Boolean validate = SpendUtil.validate(msg);
         if(!validate) {
@@ -85,15 +82,17 @@ public class SpendUtil {
         //平安还款-4444
         //支付宝411
         //花呗-6666
-        spendInfo.setSpendType(baseMsgTypeEnum.getCode());
+        spendInfo.setSpendType(base.getCode());
         spendInfo.setRemark(msg);
-        String amt = Pattern.compile("[^0-9]").matcher(msg).replaceAll("").trim();
+        String amt = Pattern.compile("[^0-9.]").matcher(msg).replaceAll("").trim();
         spendInfo.setAmt(BigDecimalUtil.getAmt(new BigDecimal(amt)));
         String newMsg = msg.replaceAll(amt, StringUtils.EMPTY);
-        newMsg = MsgUtil.removeContainsKeyWord(newMsg, baseMsgTypeEnum);
+        newMsg = MsgUtil.removeContainsKeyWord(newMsg, base);
         spendInfo.setChannel(newMsg);
     }
-    private static void getMsgs(String msg,SpendInfo spendInfo, BaseMsgTypeEnum baseMsgTypeEnum,WxUserBO userBO){
+
+
+    private static void getMsgs(String msg,SpendInfo spendInfo ,WxUserBO userBO){
         String[] msgs = null;
         if(msg.contains("\n")){
             msgs = msg.split("\\n");
@@ -113,13 +112,13 @@ public class SpendUtil {
         }
         spendInfo.setIsMultiple(Boolean.FALSE);
         if(Objects.isNull(msgs)){
-            getMsgOne(msg,spendInfo,baseMsgTypeEnum,userBO);
+            getMsgOne(msg,spendInfo,userBO);
             return;
         }
         List<SpendInfo> list = new ArrayList<>();
         for (String s : msgs) {
             SpendInfo spendInfo2 = new SpendInfo();
-            getMsgOne(s,spendInfo2,baseMsgTypeEnum,userBO);
+            getMsgOne(s,spendInfo2,userBO);
             list.add(spendInfo2);
         }
         spendInfo.setIsMultiple(Boolean.TRUE);

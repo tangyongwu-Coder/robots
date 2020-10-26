@@ -4,6 +4,8 @@ import com.sirius.robots.comm.enums.MsgErrorEnum;
 import com.sirius.robots.comm.enums.msg.*;
 import com.sirius.robots.comm.exception.RobotsServiceException;
 import com.sirius.robots.comm.util.BigDecimalUtil;
+import com.sirius.robots.comm.util.DateUtils;
+import com.sirius.robots.dal.model.FamilyInfo;
 import com.sirius.robots.dal.model.SpendInfo;
 import com.sirius.robots.manager.SpendInfoManager;
 import com.sirius.robots.manager.model.BaseMsgBO;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 public class SpendMsgService extends BaseMsgService<SpendInfo> {
     @Autowired
     private SpendInfoManager spendInfoManager;
+
     /**
      * 消息类型
      *
@@ -117,12 +120,14 @@ public class SpendMsgService extends BaseMsgService<SpendInfo> {
         SpendInfo spendInfo = baseMsgBO.getT();
         List<SpendInfo> all = null;
         String querySpendType = msgType.getCode();
+        String countDate = DateUtils.getCurrent(DateUtils.datePattern);
         switch (msgType){
             case INCOME:
-                all = spendInfoManager.addSpend(spendInfo,userBO);
-                break;
             case PAY:
-                all = spendInfoManager.addSpend(spendInfo,userBO);
+                Boolean sameType = spendInfoManager.addSpend(spendInfo,countDate,userBO);
+                String type = sameType ? msgType.getCode() : null;
+                querySpendType = sameType ? msgType.getCode() : "ALL";
+                all = spendInfoManager.queryByType(type,countDate,userBO);
                 break;
             case DELETE:
                 SpendInfo deleteOne = spendInfoManager.delete(spendInfo,userBO);
@@ -139,11 +144,11 @@ public class SpendMsgService extends BaseMsgService<SpendInfo> {
                 all = spendInfoManager.queryDate(userBO);
                 break;
         }
-        return getRes(all,querySpendType);
+        return getRes(all,userBO,querySpendType);
     }
 
 
-    private String getRes(List<SpendInfo> all,String msgType){
+    private String getRes(List<SpendInfo> all,WxUserBO userBO,String msgType){
 
         if(SpendMsgTypeEnum.DATE.getCode().equals(msgType)){
             if(CollectionUtils.isEmpty(all)){
@@ -171,19 +176,26 @@ public class SpendMsgService extends BaseMsgService<SpendInfo> {
                 Integer id = spendInfo.getId();
                 if(SpendMsgTypeEnum.INCOME.getCode().equals(spendInfo.getSpendType())){
                     incomeAmtAll += amt;
-                    income.append("<").append(id).append(">").append(channel).append(amtDou).append("元。\n");
+                    if(userBO.getUserId().equals(spendInfo.getUserId())){
+                        income.append("<").append(id).append(">");
+                    }
+                    income.append(channel).append(amtDou).append("元。\n");
                 }else{
                     payAmtAll +=amt;
+                    if(userBO.getUserId().equals(spendInfo.getUserId())){
+                        pay.append("<").append(id).append(">");
+                    }
                     pay.append("<").append(id).append(">").append(channel).append(amtDou).append("元。\n");
                 }
             }
         }
         StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-        if(!SpendMsgTypeEnum.PAY.getCode().equals(msgType)){
+        FamilyInfo family = wxUserInfoManager.getFamily(userBO.getFamilyId());
+        sb.append(family.getName()).append("\n");
+        if(!SpendMsgTypeEnum.PAY.getCode().equals(msgType) || "ALL".equals(msgType)){
             sb.append("收入==>\n").append(income);
         }
-        if(!SpendMsgTypeEnum.INCOME.getCode().equals(msgType)){
+        if(!SpendMsgTypeEnum.INCOME.getCode().equals(msgType) || "ALL".equals(msgType)){
             sb.append("支出==>\n").append(pay);
         }
         if(SpendMsgTypeEnum.QUERY.getCode().equals(msgType) || SpendMsgTypeEnum.COUNT.getCode().equals(msgType)){

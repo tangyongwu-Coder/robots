@@ -39,7 +39,6 @@ public class MsgHandler extends AbstractHandler {
             msg = "服务异常,请稍后再试！";
             logger.error("处理消息出错,e",e);
         }
-        msg = "<a data-miniprogram-appid=\"wx5ba8812bdfc7741f\" data-miniprogram-path=\"amouse_wxapp_card/pages/card/home/home\" href=\"http://www.qq.com\">5万运营都在用的 运营名片小程序</a>";
         return new TextBuilder().build(msg, wxMessage, weixinService);
 
     }

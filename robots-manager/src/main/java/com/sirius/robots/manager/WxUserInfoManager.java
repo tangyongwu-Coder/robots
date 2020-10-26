@@ -58,7 +58,9 @@ public class WxUserInfoManager {
             wxUserInfoMapper.updateByPrimaryKeySelective(wxUserInfo);
         }
     }
-
+    public FamilyInfo getFamily(Integer id){
+        return familyInfoMapper.selectByPrimaryKey(id);
+    }
     public FamilyInfo getFamily(String name){
         FamilyInfo familyInfo = familyInfoMapper.selectByName(name);
         if(Objects.nonNull(familyInfo)){

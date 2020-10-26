@@ -28,21 +28,30 @@ public class SpendInfoManager {
     @Autowired
     private SpendInfoMapper spendInfoMapper;
 
-    public List<SpendInfo> addSpend(SpendInfo spendInfo,WxUserBO userBO){
+    public Boolean addSpend(SpendInfo spendInfo,String countDate,WxUserBO userBO){
         Boolean isMultiple = spendInfo.getIsMultiple();
-        String countDate = DateUtils.getCurrent(DateUtils.datePattern);
         if(isMultiple){
             List<SpendInfo> list = spendInfo.getList();
+            Boolean isSameType = Boolean.TRUE;
+            String spendType = null;
             for (SpendInfo info : list) {
+                String spendType1 = info.getSpendType();
+                if(Objects.isNull(spendType)){
+                    spendType = spendType1;
+                }else if(!spendType.equals(spendType1)){
+                    isSameType = Boolean.FALSE;
+                }
                 info.setCountDate(countDate);
                 initSpendOne(info,userBO);
             }
             spendInfoMapper.insertBatch(list);
+            return isSameType;
         }else{
+            spendInfo.setCountDate(countDate);
             initSpendOne(spendInfo,userBO);
             spendInfoMapper.insert(spendInfo);
+            return Boolean.TRUE;
         }
-        return queryByType(spendInfo.getSpendType(),countDate,userBO);
     }
 
     private void initSpendOne(SpendInfo spendInfo,WxUserBO userBO){
@@ -64,6 +73,7 @@ public class SpendInfoManager {
             log.error("不能操作非本人信息:{},user:{}",spendInfo.getRemark(),userBO.getUserId());
             throw new RobotsServiceException(MsgErrorEnum.USER_NOT_PERMISSION);
         }
+        spendInfoMapper.delete(spendInfo1);
         return spendInfo1;
     }
 
