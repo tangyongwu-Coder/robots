@@ -13,4 +13,14 @@ public interface ServiceConstants {
 
 
     String NO_GROUP_OUT="当前未进入分组！";
+
+    String REDIS_CHECK_SEND = "ROBOTS:RESET_CHECK_SEND_";
+
+    String LOGIN_USER_REDIS_KEY = "ROBOTS:LOGIN:USER:";
+
+    String LOGIN_USER_REFRESH_REDIS_KEY = "ROBOTS:LOGIN:USER:REFRESH";
+
+
+    String SUCCESS = "SUCCESS";
+
 }

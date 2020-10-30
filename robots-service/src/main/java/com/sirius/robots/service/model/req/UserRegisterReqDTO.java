@@ -37,6 +37,12 @@ public class UserRegisterReqDTO implements Serializable {
     @Pattern(regexp = ValidatePattenUtil.EMAIL_REGEX,message = "邮箱格式不正确,,请重新输入")
     private String email;
     /**
+     * 验证码
+     */
+    @NotBlank(message = "验证码不能为空")
+    private String code;
+
+    /**
      * 密码
      */
     @NotBlank(message = "密码不能为空")

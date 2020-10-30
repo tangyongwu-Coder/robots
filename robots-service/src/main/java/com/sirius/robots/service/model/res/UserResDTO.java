@@ -1,11 +1,10 @@
-package com.sirius.robots.dal.model;
+package com.sirius.robots.service.model.res;
 
+import com.sirius.robots.dal.model.BaseDO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-
-import java.lang.Integer;
 
 /**
  * 用户信息表实体类
@@ -14,7 +13,7 @@ import java.lang.Integer;
  * @version 5.0 createTime: 2019-12-30
   */
 @Data
-public class UserInfo extends BaseDO implements Serializable {
+public class UserResDTO extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID=1577696081709L;
    /**
@@ -55,4 +54,16 @@ public class UserInfo extends BaseDO implements Serializable {
 	 */
 	@ApiModelProperty("登录令牌")
 	private String token;
+
+	/**
+	 * 刷新令牌
+	 */
+	@ApiModelProperty("刷新令牌")
+	private String refreshToken;
+
+	/**
+	 * 系统类型
+	 */
+	@ApiModelProperty("系统类型")
+	private String systemType;
 }

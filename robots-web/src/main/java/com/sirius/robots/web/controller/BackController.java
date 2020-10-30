@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
@@ -16,7 +17,7 @@ import java.util.*;
  * @version 5.0 createTime: 2020/1/3
  */
 @Slf4j
-@Controller
+@RestController
 public class BackController {
 
     @RequestMapping(value ="/back/index", method = RequestMethod.GET)

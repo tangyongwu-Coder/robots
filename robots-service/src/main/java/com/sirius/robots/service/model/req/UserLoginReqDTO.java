@@ -1,13 +1,11 @@
 package com.sirius.robots.service.model.req;
 
 
-import com.sirius.robots.comm.util.ValidatePattenUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -24,13 +22,11 @@ public class UserLoginReqDTO implements Serializable {
      * 用户名
      */
     @NotBlank(message = "用户名不能为空")
-    @Pattern(regexp = ValidatePattenUtil.USER_NAME_REGEX,message = "用户名格式有误,请确认后再输入")
     private String loginName;
     /**
      * 密码
      */
     @NotBlank(message = "密码不能为空")
-    @Pattern(regexp = ValidatePattenUtil.PASS_WORD_REGEX,message = "密码格式有误,请确认后再输入")
     private String passWord;
 
     /**

@@ -13,10 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -25,7 +22,7 @@ import java.util.*;
  * @version 5.0 createTime: 2020/1/6
  */
 @Slf4j
-@Controller
+@RestController
 @RequestMapping(value ="/enums",consumes = MediaType.APPLICATION_JSON_VALUE)
 public class EnumController {
 

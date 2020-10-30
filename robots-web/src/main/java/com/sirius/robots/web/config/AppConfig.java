@@ -35,7 +35,8 @@ public class AppConfig {
         registration.setOrder(1);
         registration.addUrlPatterns("/*");
         registration.addInitParameter("exclusions",
-                "/js/**,/css/**,/static/images/**,/fonts/**,/images/**,/login,/register,/,/index,/forgot,/out,/user/login,/user/forgot,/user/register");
+                "/js/**,/css/**,/static/images/**,/fonts/**,/images/**,/login,/register,/,/index,/forgot," +
+                        "/out,/user/login,/user/forgot,/user/register,/user/sendCode");
         return registration;
     }
 

@@ -13,6 +13,16 @@ spring:
     check-template-location: true
     suffix: .html
     encoding: UTF-8
+  mail:
+    host: smtp.163.com
+    username: sgzmsrobots@163.com
+    password: STTQGUTKEPOYTGIC #Qwer123456
+  redis:
+    database: 0
+    host: 139.196.192.223
+    port: 6379
+    timeout: 2000s
+    password: redis123
 mybatis:
     mapperLocations: classpath:*/mapper/*.xml
 
