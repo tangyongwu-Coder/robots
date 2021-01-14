@@ -44,7 +44,7 @@
         <zkclient.version>0.1</zkclient.version>
         <zookeeper.version>3.5.1-alpha</zookeeper.version>
         <!--excl-->
-        <excl.poi.version>3.17-beta1</excl.poi.version>
+        <excl.poi.version>4.1.2</excl.poi.version>
         <redis.version>2.8.2</redis.version>
         <redisson.version>2.0.0</redisson.version>
         <project.verision>1.0.0-SNAPSHOT</project.verision>
